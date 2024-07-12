@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cst2335_group_project/airplane_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -25,11 +26,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-     initialRoute: "/",
+     initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(title: "Turbulence Airlines Operations"),
         // '/customer': ,
-        // '/airplane': ,
+        '/airplane': (context) => const AirplanePage(title: "Airplane Management"),
+        // '/airplane/details: ,
         // '/flight': ,
         // '/reservation: '
       },
@@ -51,22 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  void customersPage() {
-    Navigator.pushNamed(context, '/customer');
-  }
-
-  void airplanesPage() {
-    Navigator.pushNamed(context, '/airplane');
-  }
-
-  void flightsPage() {
-    Navigator.pushNamed(context, '/flight');
-  }
-
-  void reservationsPage() {
-    Navigator.pushNamed(context, '/reservation');
-  }
-
   Widget controlPanel() {
     return Column(
       children: [
@@ -83,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         ElevatedButton(
-            onPressed: customersPage,
+            onPressed: () {Navigator.pushNamed(context, '/customer'); },
             style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
@@ -100,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         ),
         ElevatedButton(
-            onPressed: customersPage,
+            onPressed: () {Navigator.pushNamed(context, '/airplane'); },
             style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
@@ -117,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         ),
         ElevatedButton(
-            onPressed: customersPage,
+            onPressed: () {Navigator.pushNamed(context, '/flight'); },
             style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
@@ -134,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         ),
         ElevatedButton(
-            onPressed: customersPage,
+            onPressed: () {Navigator.pushNamed(context, '/Reservation'); },
             style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
