@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const MyHomePage(title: "Turbulence Airlines Operations"),
         // '/customer': ,
-        '/airplane': (context) => const AirplanePage(title: "Airplane Management"),
+        //'/airplane': (context) => const AirplanePage(title: "Airplane Management"),
         // '/airplane/details: ,
         // '/flight': ,
         // '/reservation: '
@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         ),
         ElevatedButton(
-            onPressed: () {Navigator.pushNamed(context, '/Reservation'); },
+            onPressed: () {Navigator.pushNamed(context, '/reservation'); },
             style: ButtonStyle(
                 backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
