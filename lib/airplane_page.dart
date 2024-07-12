@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
 class AirplanePage extends StatefulWidget {
   const AirplanePage({super.key, required this.title});
@@ -10,16 +13,15 @@ class AirplanePage extends StatefulWidget {
 }
 
 class _AirplanePageState extends State<AirplanePage> {
-
   @override
   void initState() {
     super.initState();
   }
 
-  Widget controlPanel() {
-    return const Column(
+  Widget controlPanel(Size size) {
+    return Column(
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
           child: Text(
             "Airplane Operations",
@@ -31,11 +33,178 @@ class _AirplanePageState extends State<AirplanePage> {
                 fontWeight: FontWeight.bold),
           ),
         ),
-        Row(
+        const Row(
           children: [
-            Text("Airplane Type: "),
-            Text("Max. Passengers: ")
-          ],)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Airplane Type: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: 200,
+              height: 20,
+              child: TextField(),
+            ),
+          ],
+        ),
+        const Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Manufacturer: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: 200,
+              height: 20,
+              child: TextField(),
+            ),
+          ],
+        ),
+        const Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Max. Passengers: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: 177,
+              height: 20,
+              child: TextField(),
+            ),
+          ],
+        ),
+        const Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Max. Speed: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: 214,
+              height: 20,
+              child: TextField(),
+            ),
+          ],
+        ),
+        const Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Max. Range: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: 214,
+              height: 20,
+              child: TextField(),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: const SizedBox(
+                width: 150,
+                height: 30,
+                child: Row(children: [
+                  Icon(
+                    Icons.add,
+                    color: Colors.greenAccent,
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  Text("Add Airplane",
+                      style:
+                          TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ])),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget listView(double width, double height) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20), color: Colors.black54),
+          child: Column(
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      "Airplane Inventory",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Satoshi",
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                ],
+              ),
+              Container(
+                width: width - 20,
+                height: height - 45,
+              ),
+            ],
+          ),
+        )
       ],
     );
   }
@@ -61,8 +230,8 @@ class _AirplanePageState extends State<AirplanePage> {
                             const AssetImage("assets/images/plane-wing.png"))),
                 child: Column(
                   children: [
-                    Expanded(child: controlPanel()),
-                    // Padding(padding: const EdgeInsets.symmetric(vertical: 10), child: flightList(size.width - 100, size.height / 2, 45,8))
+                    Expanded(child: controlPanel(size)),
+                    Padding(padding: const EdgeInsets.only(bottom: 10), child: listView(size.width - 50, size.height / 1.8))
                   ],
                 ),
               ),
@@ -86,8 +255,8 @@ class _AirplanePageState extends State<AirplanePage> {
                 ),
                 child: Row(
                   children: [
-                    Expanded(child: controlPanel()),
-                    // Expanded(child: flightList((size.width / 2) - 25, size.height - 55, 80, 10)),
+                    Expanded(child: controlPanel(size)),
+                    Expanded(child: listView((size.width / 2) - 25, size.height - 55)),
                   ],
                 ),
               ),
