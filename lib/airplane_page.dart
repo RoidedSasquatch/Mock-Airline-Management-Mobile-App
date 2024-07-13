@@ -124,11 +124,15 @@ class _AirplanePageState extends State<AirplanePage> {
       airplaneDAO.delete(selectedRow);
       selectedRow = -1;
       rowSelected = false;
+      Navigator.pop(context);
     });
   }
 
-  Widget createErrorSnackBar(String errorMsg) {
-    return SnackBar(content: Text(errorMsg), showCloseIcon: true);
+  createErrorSnackBar(String errorMsg) {
+    SnackBar snackBar = SnackBar(content: Text(errorMsg), showCloseIcon: true);
+    Future.delayed(const Duration(seconds: 1)).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 
   Widget controlPanel(Size size, double textFieldScalar) {
@@ -486,7 +490,19 @@ class _AirplanePageState extends State<AirplanePage> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 7),
           child: ElevatedButton(
-            onPressed: deleteAirplane,
+            onPressed: () {showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('Confirm Delete'),
+                content: const Text(
+                    'Do you really want to delete this airplane?'),
+                actions: <Widget>[
+                  ElevatedButton(onPressed: deleteAirplane, child: const Text("Yes")),
+                  ElevatedButton(onPressed: () {Navigator.pop(context); }, child: const Text("Cancel")),
+
+                ],
+              ),
+            );},
             style: ButtonStyle(
                 backgroundColor:
                     MaterialStateColor.resolveWith((states) => Colors.black38),
