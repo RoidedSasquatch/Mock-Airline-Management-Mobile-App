@@ -1,21 +1,20 @@
 class Validation {
 
   bool validateType(String airplaneType) {
-    RegExp regExp = RegExp(r'^[a-z][A-Z]+$', caseSensitive: false);
-    return regExp.hasMatch(airplaneType);
+    return airplaneType.isNotEmpty;
   }
 
-  bool validatePassengers(int maxPassengers) {
+  bool validatePassengers(String maxPassengers) {
     RegExp regExp = RegExp(r'^[0-9]+$');
-    return regExp.hasMatch(maxPassengers.toString());
+    return regExp.hasMatch(maxPassengers);
   }
 
-  bool validateSpeed(int maxSpeed) {
+  bool validateSpeed(String maxSpeed) {
     RegExp regExp = RegExp(r'^(0|[1-9]\d*)(\.\d+)?$');
     return regExp.hasMatch(maxSpeed.toString());
   }
 
-  bool validateRange(int maxRange) {
+  bool validateRange(String maxRange) {
     RegExp regExp = RegExp(r'^(0|[1-9]\d*)(\.\d+)?$');
     return regExp.hasMatch(maxRange.toString());
   }

@@ -1,4 +1,9 @@
+import 'package:cst2335_group_project/utils.dart';
+import 'package:cst2335_group_project/validation.dart';
 import 'package:flutter/material.dart';
+
+import 'airplane.dart';
+import 'airplane_database.dart';
 
 class AirplanePage extends StatefulWidget {
   const AirplanePage({super.key, required this.title});
@@ -9,9 +14,79 @@ class AirplanePage extends StatefulWidget {
 }
 
 class _AirplanePageState extends State<AirplanePage> {
+  late TextEditingController insertTypeCont;
+  late TextEditingController insertPassengerCont;
+  late TextEditingController insertSpeedCont;
+  late TextEditingController insertRangeCont;
+  late TextEditingController detailsTypeCont;
+  late TextEditingController detailsPassengerCont;
+  late TextEditingController detailsSpeedCont;
+  late TextEditingController detailsRangeCont;
+  late Validation validation;
+  late List<Airplane> airplanes;
+  late final db;
+  late final airplaneDAO;
+  late bool noValidationErrors;
+  late bool rowSelected;
+  late Airplane selectedAirplane;
+
   @override
   void initState() {
     super.initState();
+    insertTypeCont = TextEditingController();
+    insertPassengerCont = TextEditingController();
+    insertSpeedCont = TextEditingController();
+    insertRangeCont = TextEditingController();
+    detailsTypeCont = TextEditingController();
+    detailsPassengerCont = TextEditingController();
+    detailsSpeedCont = TextEditingController();
+    detailsRangeCont = TextEditingController();
+    validation = Validation();
+    airplanes = [];
+    noValidationErrors = true;
+    rowSelected = false;
+    initDatabase();
+  }
+
+  void initDatabase() async {
+    db = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    airplaneDAO = db.listDao;
+    List<Airplane> result = await airplaneDAO.findAllListItems();
+    setState(() {
+      airplanes.addAll(result);
+    });
+  }
+
+  void insertAirplane() {
+    if(!validation.validateType(insertTypeCont.value.text)) {
+      noValidationErrors = false;
+      createErrorSnackBar("Error: Airplane Type cannot be empty.");
+    }
+    if(!validation.validatePassengers(insertPassengerCont.value.text)) {
+      noValidationErrors = false;
+      createErrorSnackBar("Error: Max. Passengers cannot be empty, and must be an integer.");
+    }
+    if(!validation.validateSpeed(insertSpeedCont.value.text)) {
+      noValidationErrors = false;
+      createErrorSnackBar("Error: Max. Speed cannot be empty, and must be numeric.");
+    }
+    if(!validation.validateRange(insertRangeCont.value.text)) {
+      noValidationErrors = false;
+      createErrorSnackBar("Error: Max. Range cannot be empty, and must be numeric.");
+    }
+    if(noValidationErrors) {
+      Airplane airplane = Airplane(Utils.id++, insertTypeCont.value.text, int.parse(insertPassengerCont.value.text), double.parse(insertSpeedCont.value.text), double.parse(insertRangeCont.value.text));
+      airplaneDAO.insertList(airplane);
+      airplanes.add(airplane);
+      insertTypeCont.text = "";
+      insertPassengerCont.text = "";
+      insertSpeedCont.text = "";
+      insertRangeCont.text = "";
+    }
+  }
+
+  Widget createErrorSnackBar(String errorMsg) {
+    return SnackBar(content: Text(errorMsg), showCloseIcon: true);
   }
 
   Widget controlPanel(Size size, double textFieldScalar) {
@@ -46,7 +121,7 @@ class _AirplanePageState extends State<AirplanePage> {
             SizedBox(
               width: textFieldScalar,
               height: 20,
-              child: const TextField(),
+              child: TextField(controller: insertTypeCont),
             ),
           ],
         ),
@@ -67,7 +142,7 @@ class _AirplanePageState extends State<AirplanePage> {
             SizedBox(
               width: textFieldScalar - 23,
               height: 20,
-              child: const TextField(),
+              child: TextField(controller: insertPassengerCont),
             ),
           ],
         ),
@@ -88,7 +163,7 @@ class _AirplanePageState extends State<AirplanePage> {
             SizedBox(
               width: textFieldScalar + 14,
               height: 20,
-              child: const TextField(),
+              child: TextField(controller: insertSpeedCont),
             ),
           ],
         ),
@@ -109,7 +184,7 @@ class _AirplanePageState extends State<AirplanePage> {
             SizedBox(
               width: textFieldScalar + 14,
               height: 20,
-              child: const TextField(),
+              child: TextField(controller: insertRangeCont),
             ),
           ],
         ),
@@ -216,7 +291,7 @@ class _AirplanePageState extends State<AirplanePage> {
             SizedBox(
               width: textFieldScalar,
               height: 20,
-              child: const TextField(),
+              child: TextField(controller: detailsTypeCont),
             ),
           ],
         ),
@@ -237,7 +312,7 @@ class _AirplanePageState extends State<AirplanePage> {
             SizedBox(
               width: textFieldScalar - 23,
               height: 20,
-              child: const TextField(),
+              child: TextField(controller: detailsPassengerCont),
             ),
           ],
         ),
@@ -258,7 +333,7 @@ class _AirplanePageState extends State<AirplanePage> {
             SizedBox(
               width: textFieldScalar + 14,
               height: 20,
-              child: const TextField(),
+              child: TextField(controller: detailsSpeedCont),
             ),
           ],
         ),
@@ -279,7 +354,7 @@ class _AirplanePageState extends State<AirplanePage> {
             SizedBox(
               width: textFieldScalar + 14,
               height: 20,
-              child: const TextField(),
+              child: TextField(controller: detailsRangeCont),
             ),
           ],
         ),
