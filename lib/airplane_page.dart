@@ -2,6 +2,8 @@ import 'package:cst2335_group_project/utils.dart';
 import 'package:cst2335_group_project/validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import 'airplane.dart';
@@ -103,6 +105,14 @@ class _AirplanePageState extends State<AirplanePage> {
 
   updateAirplane() {
     setState(() {
+      airplanes[selectedRow].airplaneType = detailsTypeCont.value.text;
+      airplanes[selectedRow].maxPassengers =
+          int.parse(detailsPassengerCont.value.text);
+      airplanes[selectedRow].maxSpeed =
+          double.parse(detailsSpeedCont.value.text);
+      airplanes[selectedRow].maxRange =
+          double.parse(detailsRangeCont.value.text);
+      airplaneDAO.updateList(airplanes[selectedRow]);
       selectedRow = -1;
       rowSelected = false;
     });
@@ -110,6 +120,8 @@ class _AirplanePageState extends State<AirplanePage> {
 
   deleteAirplane() {
     setState(() {
+      airplanes.remove(airplanes[selectedRow]);
+      airplaneDAO.delete(selectedRow);
       selectedRow = -1;
       rowSelected = false;
     });
@@ -325,17 +337,33 @@ class _AirplanePageState extends State<AirplanePage> {
   Widget details(Size size, double textFieldScalar) {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-          child: Text(
-            "Details",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Satoshi",
-                fontSize: 35,
-                fontWeight: FontWeight.bold),
-          ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 5, right: 80),
+              child: CloseButton(
+                color: Colors.black45,
+                onPressed: () {
+                  setState(() {
+                    selectedRow = -1;
+                    rowSelected = false;
+                  });
+                },
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 25),
+              child: Text(
+                "Details",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
         Row(
           children: [
