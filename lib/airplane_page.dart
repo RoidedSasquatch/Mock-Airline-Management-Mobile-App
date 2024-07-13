@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 class AirplanePage extends StatefulWidget {
   const AirplanePage({super.key, required this.title});
@@ -18,7 +14,7 @@ class _AirplanePageState extends State<AirplanePage> {
     super.initState();
   }
 
-  Widget controlPanel(Size size) {
+  Widget controlPanel(Size size, double textFieldScalar) {
     return Column(
       children: [
         const Padding(
@@ -33,9 +29,9 @@ class _AirplanePageState extends State<AirplanePage> {
                 fontWeight: FontWeight.bold),
           ),
         ),
-        const Row(
+        Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: Text(
                 "Airplane Type: ",
@@ -48,36 +44,15 @@ class _AirplanePageState extends State<AirplanePage> {
               ),
             ),
             SizedBox(
-              width: 200,
+              width: textFieldScalar,
               height: 20,
-              child: TextField(),
+              child: const TextField(),
             ),
           ],
         ),
-        const Row(
+        Row(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
-                "Manufacturer: ",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: "Satoshi",
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(
-              width: 200,
-              height: 20,
-              child: TextField(),
-            ),
-          ],
-        ),
-        const Row(
-          children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: Text(
                 "Max. Passengers: ",
@@ -90,15 +65,15 @@ class _AirplanePageState extends State<AirplanePage> {
               ),
             ),
             SizedBox(
-              width: 177,
+              width: textFieldScalar - 23,
               height: 20,
-              child: TextField(),
+              child: const TextField(),
             ),
           ],
         ),
-        const Row(
+        Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: Text(
                 "Max. Speed: ",
@@ -111,15 +86,15 @@ class _AirplanePageState extends State<AirplanePage> {
               ),
             ),
             SizedBox(
-              width: 214,
+              width: textFieldScalar + 14,
               height: 20,
-              child: TextField(),
+              child: const TextField(),
             ),
           ],
         ),
-        const Row(
+        Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
               child: Text(
                 "Max. Range: ",
@@ -132,9 +107,9 @@ class _AirplanePageState extends State<AirplanePage> {
               ),
             ),
             SizedBox(
-              width: 214,
+              width: textFieldScalar + 14,
               height: 20,
-              child: TextField(),
+              child: const TextField(),
             ),
           ],
         ),
@@ -198,13 +173,172 @@ class _AirplanePageState extends State<AirplanePage> {
                   )
                 ],
               ),
-              Container(
+              SizedBox(
                 width: width - 20,
                 height: height - 45,
               ),
             ],
           ),
         )
+      ],
+    );
+  }
+
+  Widget details(Size size, double textFieldScalar) {
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+          child: Text(
+            "Details",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: "Satoshi",
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Airplane Type: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: textFieldScalar,
+              height: 20,
+              child: const TextField(),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Max. Passengers: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: textFieldScalar - 23,
+              height: 20,
+              child: const TextField(),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Max. Speed: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: textFieldScalar + 14,
+              height: 20,
+              child: const TextField(),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+              child: Text(
+                "Max. Range: ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(
+              width: textFieldScalar + 14,
+              height: 20,
+              child: const TextField(),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 9),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ButtonStyle(
+                backgroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: const SizedBox(
+                width: 150,
+                height: 30,
+                child: Row(children: [
+                  Icon(
+                    Icons.add,
+                    color: Colors.greenAccent,
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(horizontal: 7)),
+                  Text("Update Airplane",
+                      style:
+                      TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ])),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 9),
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ButtonStyle(
+                backgroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: const SizedBox(
+                width: 150,
+                height: 30,
+                child: Row(children: [
+                  Icon(
+                    Icons.add,
+                    color: Colors.greenAccent,
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(horizontal: 7)),
+                  Text("Delete Airplane",
+                      style:
+                      TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ])),
+          ),
+        ),
       ],
     );
   }
@@ -230,7 +364,7 @@ class _AirplanePageState extends State<AirplanePage> {
                             const AssetImage("assets/images/plane-wing.png"))),
                 child: Column(
                   children: [
-                    Expanded(child: controlPanel(size)),
+                    Expanded(child: controlPanel(size, 200)),
                     Padding(padding: const EdgeInsets.only(bottom: 10), child: listView(size.width - 50, size.height / 1.8))
                   ],
                 ),
@@ -255,8 +389,9 @@ class _AirplanePageState extends State<AirplanePage> {
                 ),
                 child: Row(
                   children: [
-                    Expanded(child: controlPanel(size)),
-                    Expanded(child: listView((size.width / 2) - 25, size.height - 55)),
+                    Expanded(child: controlPanel(size, 100)),
+                    Expanded(child: listView((size.width / 2), size.height - 55)),
+                    Expanded(child: details(size, 100))
                   ],
                 ),
               ),
