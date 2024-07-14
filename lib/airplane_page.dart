@@ -110,10 +110,8 @@ class _AirplanePageState extends State<AirplanePage> {
             double.parse(insertRangeCont.value.text));
         airplaneDAO.insertList(airplane);
         airplanes.add(airplane);
-        AirplaneDataRepository.airplaneType =
-            insertTypeCont.value.text;
-        AirplaneDataRepository.maxPassengers =
-            insertPassengerCont.value.text;
+        AirplaneDataRepository.airplaneType = insertTypeCont.value.text;
+        AirplaneDataRepository.maxPassengers = insertPassengerCont.value.text;
         AirplaneDataRepository.maxSpeed = insertSpeedCont.value.text;
         AirplaneDataRepository.maxRange = insertRangeCont.value.text;
         insertTypeCont.text = "";
@@ -304,6 +302,39 @@ class _AirplanePageState extends State<AirplanePage> {
                           TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ])),
           ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            AirplaneDataRepository.prefs.clear();
+            AirplaneDataRepository.airplaneType = "";
+            AirplaneDataRepository.maxPassengers = "";
+            AirplaneDataRepository.maxSpeed = "";
+            AirplaneDataRepository.maxRange = "";
+            insertTypeCont.text = "";
+            insertPassengerCont.text = "";
+            insertSpeedCont.text = "";
+            insertRangeCont.text = "";
+          },
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateColor.resolveWith((states) => Colors.black38),
+              foregroundColor:
+                  MaterialStateColor.resolveWith((states) => Colors.black38),
+              overlayColor:
+                  MaterialStateColor.resolveWith((states) => Colors.black12)),
+          child: const SizedBox(
+              width: 150,
+              height: 30,
+              child: Row(children: [
+                Icon(
+                  Icons.add,
+                  color: Colors.greenAccent,
+                ),
+                Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                Text("Clear Fields",
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+              ])),
         ),
       ],
     );
@@ -588,7 +619,7 @@ class _AirplanePageState extends State<AirplanePage> {
           Expanded(child: widget),
           Padding(
               padding: const EdgeInsets.only(bottom: 20),
-              child: listView(size.width - 50, (size.height / 2)))
+              child: listView(size.width - 50, (size.height / 2.1)))
         ],
       );
     } else {

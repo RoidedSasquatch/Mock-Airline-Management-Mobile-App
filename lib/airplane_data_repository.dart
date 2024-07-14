@@ -24,9 +24,8 @@ class AirplaneDataRepository {
 
   static void saveData() {
     prefs.setString("type", airplaneType);
-    prefs.setString("passengers", maxPassengers.toString());
-    prefs.setString("speed", maxSpeed.toString());
-    prefs.setString("range", maxRange.toString());
+    prefs.setString("passengers", maxPassengers);
+    prefs.setString("speed", maxSpeed);
+    prefs.setString("range", maxRange);
   }
-
 }
