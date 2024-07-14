@@ -1,10 +1,7 @@
+import 'package:cst2335_group_project/airplane_data_repository.dart';
 import 'package:cst2335_group_project/utils.dart';
 import 'package:cst2335_group_project/validation.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 import 'airplane.dart';
 import 'airplane_database.dart';
@@ -54,6 +51,24 @@ class _AirplanePageState extends State<AirplanePage> {
     selectedRow = -1;
     appBarTitle = "Airplane Operations";
     initDatabase();
+    AirplaneDataRepository.loadData();
+    insertTypeCont.text = AirplaneDataRepository.airplaneType;
+    insertPassengerCont.text = AirplaneDataRepository.maxPassengers;
+    insertSpeedCont.text = AirplaneDataRepository.maxSpeed;
+    insertRangeCont.text = AirplaneDataRepository.maxRange;
+  }
+
+  @override
+  void dispose() {
+    insertTypeCont.dispose();
+    insertPassengerCont.dispose();
+    insertSpeedCont.dispose();
+    insertRangeCont.dispose();
+    detailsTypeCont.dispose();
+    detailsPassengerCont.dispose();
+    detailsSpeedCont.dispose();
+    detailsRangeCont.dispose();
+    super.dispose();
   }
 
   void initDatabase() async {
@@ -95,10 +110,33 @@ class _AirplanePageState extends State<AirplanePage> {
             double.parse(insertRangeCont.value.text));
         airplaneDAO.insertList(airplane);
         airplanes.add(airplane);
+        AirplaneDataRepository.airplaneType =
+            insertTypeCont.value.text;
+        AirplaneDataRepository.maxPassengers =
+            insertPassengerCont.value.text;
+        AirplaneDataRepository.maxSpeed = insertSpeedCont.value.text;
+        AirplaneDataRepository.maxRange = insertRangeCont.value.text;
         insertTypeCont.text = "";
         insertPassengerCont.text = "";
         insertSpeedCont.text = "";
         insertRangeCont.text = "";
+        SnackBar snackBar = SnackBar(
+            showCloseIcon: true,
+            content: const Text("Save data for next entry?"),
+            action: SnackBarAction(
+                label: "Yes",
+                onPressed: () {
+                  AirplaneDataRepository.saveData();
+                  AirplaneDataRepository.loadData();
+                  insertTypeCont.text = AirplaneDataRepository.airplaneType;
+                  insertPassengerCont.text =
+                      AirplaneDataRepository.maxPassengers;
+                  insertSpeedCont.text = AirplaneDataRepository.maxSpeed;
+                  insertRangeCont.text = AirplaneDataRepository.maxRange;
+                }));
+        Future.delayed(const Duration(seconds: 1)).then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
       }
 
       noValidationErrors = true;
@@ -356,7 +394,7 @@ class _AirplanePageState extends State<AirplanePage> {
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 5),
+              padding: const EdgeInsets.only(top: 5),
               child: CloseButton(
                 color: Colors.black45,
                 onPressed: () {
@@ -605,16 +643,16 @@ class _AirplanePageState extends State<AirplanePage> {
                         title: const Text('Usage Guide'),
                         content: const Text(
                             'Add airplanes to the database by entering values into '
-                                'the text fields. Click the add button to add an airplane. '
-                                'Once an airplane is added, it will appear in the airplane '
-                                'inventory list. Click on a list item to view details about it. '
-                                'When viewing details, values can be modified by simply modifying '
-                                'the values in the fields and clicking the update button. '
-                                'Items can also be deleted by clicking the delete button. '
-                                'Click the "X" button to leave the details screen. \n\nValidation:'
-                                '\nAirplane Type cannot be empty.\n\nMax. Passengers cannot be empty '
-                                'and must be an integer\n\nMax. Speed cannot be empty and must be '
-                                'numeric\n\nMax. Range cannot be empty and must be numeric.'),
+                            'the text fields. Click the add button to add an airplane. '
+                            'Once an airplane is added, it will appear in the airplane '
+                            'inventory list. Click on a list item to view details about it. '
+                            'When viewing details, values can be modified by simply modifying '
+                            'the values in the fields and clicking the update button. '
+                            'Items can also be deleted by clicking the delete button. '
+                            'Click the "X" button to leave the details screen. \n\nValidation:'
+                            '\nAirplane Type cannot be empty.\n\nMax. Passengers cannot be empty '
+                            'and must be an integer\n\nMax. Speed cannot be empty and must be '
+                            'numeric\n\nMax. Range cannot be empty and must be numeric.'),
                         actions: <Widget>[
                           ElevatedButton(
                               onPressed: () {

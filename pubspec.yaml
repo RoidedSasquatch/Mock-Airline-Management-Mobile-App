@@ -31,12 +31,14 @@ dependencies:
   flutter:
     sdk: flutter
   floor: ^1.4.0
+  encrypted_shared_preferences: ^3.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
 
+  sqflite: any
 dev_dependencies:
   floor_generator: ^1.4.0
   build_runner: ^2.4.9
