@@ -34,6 +34,7 @@ class _AirplanePageState extends State<AirplanePage> {
   late bool rowSelected;
   late int selectedRow;
   late Airplane selectedAirplane;
+  late String appBarTitle;
 
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _AirplanePageState extends State<AirplanePage> {
     noValidationErrors = true;
     rowSelected = false;
     selectedRow = -1;
+    appBarTitle = "Airplane Operations";
     initDatabase();
   }
 
@@ -113,8 +115,12 @@ class _AirplanePageState extends State<AirplanePage> {
       airplanes[selectedRow].maxRange =
           double.parse(detailsRangeCont.value.text);
       airplaneDAO.updateList(airplanes[selectedRow]);
-      selectedRow = -1;
-      rowSelected = false;
+      detailsTypeCont.text = airplanes[selectedRow].airplaneType;
+      detailsPassengerCont.text =
+          airplanes[selectedRow].maxPassengers.toString();
+      detailsSpeedCont.text = airplanes[selectedRow].maxSpeed.toString();
+      detailsRangeCont.text = airplanes[selectedRow].maxRange.toString();
+      // rowSelected = false;
     });
   }
 
@@ -124,6 +130,7 @@ class _AirplanePageState extends State<AirplanePage> {
       airplaneDAO.delete(selectedRow);
       selectedRow = -1;
       rowSelected = false;
+      appBarTitle = "Airplane Operations";
       Navigator.pop(context);
     });
   }
@@ -135,26 +142,14 @@ class _AirplanePageState extends State<AirplanePage> {
     });
   }
 
-  Widget controlPanel(Size size, double textFieldScalar) {
+  Widget controlPanel(Size size, double textFieldScalar, double vertPadding) {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-          child: Text(
-            "Airplane Operations",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white,
-                fontFamily: "Satoshi",
-                fontSize: 35,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
+              child: const Text(
                 "Airplane Type: ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -175,9 +170,9 @@ class _AirplanePageState extends State<AirplanePage> {
         ),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
+              child: const Text(
                 "Max. Passengers: ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -198,9 +193,9 @@ class _AirplanePageState extends State<AirplanePage> {
         ),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
+              child: const Text(
                 "Max. Speed: ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -221,9 +216,9 @@ class _AirplanePageState extends State<AirplanePage> {
         ),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
+              child: const Text(
                 "Max. Range: ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -243,7 +238,7 @@ class _AirplanePageState extends State<AirplanePage> {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
+          padding: EdgeInsets.symmetric(vertical: vertPadding),
           child: ElevatedButton(
             onPressed: insertAirplane,
             style: ButtonStyle(
@@ -294,10 +289,10 @@ class _AirplanePageState extends State<AirplanePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 35),
             child: SizedBox(
               width: width * 0.9,
-              height: height * 0.95,
+              height: height * 0.9,
               child: ListView.builder(
                   itemBuilder: (item, rowNum) {
                     return GestureDetector(
@@ -306,13 +301,26 @@ class _AirplanePageState extends State<AirplanePage> {
                           selectedRow = rowNum;
                           selectedAirplane = airplanes[rowNum];
                           rowSelected = true;
+                          appBarTitle = "Airplane Details";
                         });
                       },
                       child: DecoratedBox(
                           decoration: BoxDecoration(
-                              color: selectedRow == rowNum
-                                  ? Colors.blueAccent
-                                  : Colors.black87),
+                              gradient: selectedRow == rowNum
+                                  ? const LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: <Color>[
+                                          Colors.black45,
+                                          Colors.blueAccent
+                                        ])
+                                  : const LinearGradient(
+                                      begin: Alignment.centerRight,
+                                      end: Alignment.centerLeft,
+                                      colors: <Color>[
+                                          Colors.black26,
+                                          Colors.black54
+                                        ])),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -338,42 +346,32 @@ class _AirplanePageState extends State<AirplanePage> {
     );
   }
 
-  Widget details(Size size, double textFieldScalar) {
+  Widget details(Size size, double textFieldScalar, double vertPadding) {
     return Column(
       children: [
         Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 5, right: 80),
+              padding: EdgeInsets.only(top: 5),
               child: CloseButton(
                 color: Colors.black45,
                 onPressed: () {
                   setState(() {
                     selectedRow = -1;
                     rowSelected = false;
+                    appBarTitle = "Airplane Operations";
                   });
                 },
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 25),
-              child: Text(
-                "Details",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: "Satoshi",
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold),
               ),
             ),
           ],
         ),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 25, right: 25, top: 5, bottom: vertPadding * 1.5),
+              child: const Text(
                 "Airplane Type: ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -394,9 +392,10 @@ class _AirplanePageState extends State<AirplanePage> {
         ),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 25, vertical: vertPadding * 1.5),
+              child: const Text(
                 "Max. Passengers: ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -417,9 +416,10 @@ class _AirplanePageState extends State<AirplanePage> {
         ),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 25, vertical: vertPadding * 1.5),
+              child: const Text(
                 "Max. Speed: ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -440,9 +440,10 @@ class _AirplanePageState extends State<AirplanePage> {
         ),
         Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 25, vertical: vertPadding * 1.5),
+              child: const Text(
                 "Max. Range: ",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -462,7 +463,7 @@ class _AirplanePageState extends State<AirplanePage> {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
+          padding: EdgeInsets.symmetric(vertical: vertPadding),
           child: ElevatedButton(
             onPressed: updateAirplane,
             style: ButtonStyle(
@@ -488,21 +489,28 @@ class _AirplanePageState extends State<AirplanePage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 7),
+          padding: EdgeInsets.symmetric(vertical: vertPadding),
           child: ElevatedButton(
-            onPressed: () {showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text('Confirm Delete'),
-                content: const Text(
-                    'Do you really want to delete this airplane?'),
-                actions: <Widget>[
-                  ElevatedButton(onPressed: deleteAirplane, child: const Text("Yes")),
-                  ElevatedButton(onPressed: () {Navigator.pop(context); }, child: const Text("Cancel")),
-
-                ],
-              ),
-            );},
+            onPressed: () {
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  actionsAlignment: MainAxisAlignment.center,
+                  title: const Text('Confirm Delete'),
+                  content:
+                      const Text('Do you really want to delete this airplane?'),
+                  actions: <Widget>[
+                    ElevatedButton(
+                        onPressed: deleteAirplane, child: const Text("Yes")),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Cancel")),
+                  ],
+                ),
+              );
+            },
             style: ButtonStyle(
                 backgroundColor:
                     MaterialStateColor.resolveWith((states) => Colors.black38),
@@ -532,25 +540,34 @@ class _AirplanePageState extends State<AirplanePage> {
   Widget portraitWidget(Size size) {
     Widget widget;
     if (!rowSelected) {
-      widget = controlPanel(size, 200);
-      return widget;
+      widget = controlPanel(size, 200, 10);
+      return Column(
+        children: [
+          Expanded(child: widget),
+          Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: listView(size.width - 50, (size.height / 2)))
+        ],
+      );
     } else {
-      widget = details(size, 200);
+      widget = details(size, 200, 20);
       detailsTypeCont.text = selectedAirplane.airplaneType;
       detailsPassengerCont.text = selectedAirplane.maxPassengers.toString();
       detailsSpeedCont.text = selectedAirplane.maxSpeed.toString();
       detailsRangeCont.text = selectedAirplane.maxRange.toString();
-      return widget;
+      return Column(
+        children: [Expanded(child: widget)],
+      );
     }
   }
 
   Widget landscapeWidget(Size size) {
     Widget widget;
     if (!rowSelected) {
-      widget = controlPanel(size, 170);
+      widget = controlPanel(size, 170, 10);
       return widget;
     } else {
-      widget = details(size, 170);
+      widget = details(size, 170, 5);
       detailsTypeCont.text = selectedAirplane.airplaneType;
       detailsPassengerCont.text = selectedAirplane.maxPassengers.toString();
       detailsSpeedCont.text = selectedAirplane.maxSpeed.toString();
@@ -561,63 +578,97 @@ class _AirplanePageState extends State<AirplanePage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Scaffold(body: OrientationBuilder(builder: (context, orientation) {
-      if (orientation == Orientation.portrait) {
-        return Stack(
-          children: [
-            Align(
-              child: Container(
-                  width: size.width,
-                  height: size.height,
-                  decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                          image: const AssetImage(
-                              "assets/images/plane-wing.png"))),
-                  child: Column(
-                    children: [
-                      Expanded(child: portraitWidget(size)),
-                      Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: listView(size.width - 50, size.height / 2))
-                    ],
-                  )),
-            )
-          ],
-        );
-      } else {
-        return Stack(
-          children: [
-            Align(
-              child: Container(
-                  width: size.width,
-                  height: size.height,
-                  decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                        image:
-                            const AssetImage("assets/images/plane-wing.png")),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(child: landscapeWidget(size)),
-                      Padding(
-                          padding: const EdgeInsets.only(right: 20),
-                          child:
-                              listView((size.width / 2) - 35, size.height - 50))
-                    ],
-                  )),
-            )
-          ],
-        );
-      }
-    }));
+    return SafeArea(
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              title: Text(
+                appBarTitle,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Satoshi",
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              actions: [
+                DrawerButton(
+                  onPressed: () {},
+                )
+              ],
+              iconTheme: const IconThemeData(color: Colors.blueAccent),
+              centerTitle: true,
+              backgroundColor: Colors.black87,
+              toolbarHeight: 50,
+            ),
+            body: OrientationBuilder(builder: (context, orientation) {
+              if (orientation == Orientation.portrait) {
+                double physicalWidth = WidgetsBinding
+                    .instance.platformDispatcher.views.first.physicalSize.width;
+                double physicalHeight = WidgetsBinding.instance
+                    .platformDispatcher.views.first.physicalSize.height;
+                double devicePixelRatio = WidgetsBinding
+                    .instance.platformDispatcher.views.first.devicePixelRatio;
+                double width = physicalWidth / devicePixelRatio;
+                double height = physicalHeight / devicePixelRatio;
+                Size size = Size(width, height);
+                return Stack(
+                  children: [
+                    Align(
+                      child: Container(
+                          width: size.width,
+                          height: size.height,
+                          decoration: BoxDecoration(
+                              color: Colors.blueAccent,
+                              image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.black.withOpacity(0.2),
+                                      BlendMode.dstATop),
+                                  image: const AssetImage(
+                                      "assets/images/plane-wing.png"))),
+                          child: portraitWidget(size)),
+                    )
+                  ],
+                );
+              } else {
+                double physicalWidth = WidgetsBinding
+                    .instance.platformDispatcher.views.first.physicalSize.width;
+                double physicalHeight = WidgetsBinding.instance
+                    .platformDispatcher.views.first.physicalSize.height;
+                double devicePixelRatio = WidgetsBinding
+                    .instance.platformDispatcher.views.first.devicePixelRatio;
+                double width = physicalWidth / devicePixelRatio;
+                double height = physicalHeight / devicePixelRatio;
+                Size size = Size(width, height);
+                return Stack(
+                  children: [
+                    Align(
+                      child: Container(
+                          width: size.width,
+                          height: size.height,
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent,
+                            image: DecorationImage(
+                                fit: BoxFit.fill,
+                                colorFilter: ColorFilter.mode(
+                                    Colors.black.withOpacity(0.2),
+                                    BlendMode.dstATop),
+                                image: const AssetImage(
+                                    "assets/images/plane-wing.png")),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(child: landscapeWidget(size)),
+                              Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: listView(
+                                      (size.width / 2) - 35, size.height - 100))
+                            ],
+                          )),
+                    )
+                  ],
+                );
+              }
+            })));
   }
 }
