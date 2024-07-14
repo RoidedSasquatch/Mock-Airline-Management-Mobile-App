@@ -148,7 +148,8 @@ class _AirplanePageState extends State<AirplanePage> {
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
+              padding:
+                  EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
               child: const Text(
                 "Airplane Type: ",
                 textAlign: TextAlign.center,
@@ -171,7 +172,8 @@ class _AirplanePageState extends State<AirplanePage> {
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
+              padding:
+                  EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
               child: const Text(
                 "Max. Passengers: ",
                 textAlign: TextAlign.center,
@@ -194,7 +196,8 @@ class _AirplanePageState extends State<AirplanePage> {
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
+              padding:
+                  EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
               child: const Text(
                 "Max. Speed: ",
                 textAlign: TextAlign.center,
@@ -217,7 +220,8 @@ class _AirplanePageState extends State<AirplanePage> {
         Row(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
+              padding:
+                  EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
               child: const Text(
                 "Max. Range: ",
                 textAlign: TextAlign.center,
@@ -592,7 +596,35 @@ class _AirplanePageState extends State<AirplanePage> {
               ),
               actions: [
                 DrawerButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        scrollable: true,
+                        actionsAlignment: MainAxisAlignment.center,
+                        title: const Text('Usage Guide'),
+                        content: const Text(
+                            'Add airplanes to the database by entering values into '
+                                'the text fields. Click the add button to add an airplane. '
+                                'Once an airplane is added, it will appear in the airplane '
+                                'inventory list. Click on a list item to view details about it. '
+                                'When viewing details, values can be modified by simply modifying '
+                                'the values in the fields and clicking the update button. '
+                                'Items can also be deleted by clicking the delete button. '
+                                'Click the "X" button to leave the details screen. \n\nValidation:'
+                                '\nAirplane Type cannot be empty.\n\nMax. Passengers cannot be empty '
+                                'and must be an integer\n\nMax. Speed cannot be empty and must be '
+                                'numeric\n\nMax. Range cannot be empty and must be numeric.'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Close")),
+                        ],
+                      ),
+                    );
+                  },
                 )
               ],
               iconTheme: const IconThemeData(color: Colors.blueAccent),
