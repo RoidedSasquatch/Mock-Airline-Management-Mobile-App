@@ -6,13 +6,17 @@ import 'airplane_page.dart';
 // https://www.freepik.com/free-photo/transport-fly-clouds-jet-flying_1103165.htm#fromView=search&page=1&position=8&uuid=cff44ecc-8674-43ac-ac5d-1e48bf541006
 //
 
+///The main method which drives the program
 void main() {
   runApp(const MyApp());
 }
 
+/// Root widget for the application.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  ///Build method for App
+  ///[context]: The build context
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,20 +38,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// Homepage widget for the application.
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+  /// The title of the homepage.
   final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+/// State class for [MyHomePage].
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
   }
 
+  /// Widget for the control panel section.
   Widget controlPanel() {
     return Column(
       children: [
@@ -135,6 +143,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// Widget for displaying the list of flights.
+  ///
+  /// - [width]: Width of the container.
+  /// - [height]: Height of the container.
+  /// - [colWidth]: Width of each column in the DataTable.
+  /// - [fontSize]: Font size of the text in DataTable headers.
   Widget flightList(double width, double height, double colWidth, double fontSize) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -182,6 +196,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  ///Build method for HomePage
+  ///[context]: The build context
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

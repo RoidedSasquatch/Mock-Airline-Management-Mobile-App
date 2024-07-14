@@ -31,6 +31,7 @@ class $FloorAppDatabase {
       _$AppDatabaseBuilder(null);
 }
 
+/// Builder class for initializing and configuring the AppDatabase.
 class _$AppDatabaseBuilder implements $AppDatabaseBuilderContract {
   _$AppDatabaseBuilder(this.name);
 
@@ -40,18 +41,24 @@ class _$AppDatabaseBuilder implements $AppDatabaseBuilderContract {
 
   Callback? _callback;
 
+  /// Adds migrations to the database builder.
+  /// Returns the updated database builder instance.
   @override
   $AppDatabaseBuilderContract addMigrations(List<Migration> migrations) {
     _migrations.addAll(migrations);
     return this;
   }
 
+  /// Adds a callback to the database builder.
+  /// Returns the updated database builder instance.
   @override
   $AppDatabaseBuilderContract addCallback(Callback callback) {
     _callback = callback;
     return this;
   }
 
+  /// Builds the [AppDatabase] instance asynchronously.
+  /// Resolves with the initialized [AppDatabase] instance.
   @override
   Future<AppDatabase> build() async {
     final path = name != null
@@ -67,6 +74,7 @@ class _$AppDatabaseBuilder implements $AppDatabaseBuilderContract {
   }
 }
 
+/// Database implementation for managing airplane data using SQLite.
 class _$AppDatabase extends AppDatabase {
   _$AppDatabase([StreamController<String>? listener]) {
     changeListener = listener ?? StreamController<String>.broadcast();
@@ -74,6 +82,8 @@ class _$AppDatabase extends AppDatabase {
 
   AirplaneDao? _airplaneDaoInstance;
 
+  /// Opens the database at the specified [path] with optional [migrations] and [callback].
+  /// Returns a future with the initialized [sqflite.Database] instance.
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -104,12 +114,14 @@ class _$AppDatabase extends AppDatabase {
     return sqfliteDatabaseFactory.openDatabase(path, options: databaseOptions);
   }
 
+  /// Returns the instance of [AirplaneDao] for interacting with airplane data.
   @override
   AirplaneDao get airplaneDao {
     return _airplaneDaoInstance ??= _$AirplaneDao(database, changeListener);
   }
 }
 
+/// DAO (Data Access Object) for managing Airplane entity operations in SQLite database.
 class _$AirplaneDao extends AirplaneDao {
   _$AirplaneDao(
     this.database,
@@ -147,6 +159,8 @@ class _$AirplaneDao extends AirplaneDao {
 
   final UpdateAdapter<Airplane> _airplaneUpdateAdapter;
 
+  /// Finds all Airplane items stored in the database.
+  /// Returns a future with a list of [Airplane] objects.
   @override
   Future<List<Airplane>> findAllListItems() async {
     return _queryAdapter.queryList('SELECT * FROM Airplane',
@@ -158,6 +172,8 @@ class _$AirplaneDao extends AirplaneDao {
             row['maxRange'] as double));
   }
 
+  /// Finds a single Airplane item by its [id] in the database.
+  /// Returns a future with the [Airplane] object, or null if not found.
   @override
   Future<Airplane?> findSingleListItem(int id) async {
     return _queryAdapter.query('SELECT FROM Airplane WHERE id = ?1',
@@ -170,6 +186,8 @@ class _$AirplaneDao extends AirplaneDao {
         arguments: [id]);
   }
 
+  /// Deletes the Airplane item with the given [id] from the database.
+  /// Returns a future with the number of rows affected by the delete operation.
   @override
   Future<int?> delete(int id) async {
     return _queryAdapter.query('DELETE FROM Airplane WHERE id = ?1',
@@ -177,12 +195,16 @@ class _$AirplaneDao extends AirplaneDao {
         arguments: [id]);
   }
 
+  /// Inserts a new Airplane item into the database.
+  /// Returns a future with the id of the inserted item.
   @override
   Future<int> insertList(Airplane airplane) {
     return _airplaneInsertionAdapter.insertAndReturnId(
         airplane, OnConflictStrategy.abort);
   }
 
+  /// Updates an existing Airplane item in the database.
+  /// Returns a future with the number of rows affected by the update operation.
   @override
   Future<int> updateList(Airplane airplane) {
     return _airplaneUpdateAdapter.updateAndReturnChangedRows(

@@ -6,14 +6,21 @@ import 'package:flutter/material.dart';
 import 'airplane.dart';
 import 'airplane_database.dart';
 
+/// Flutter widget representing the Airplane Page, managing airplane data.
 class AirplanePage extends StatefulWidget {
+
+  /// Constructs the [AirplanePage] widget.
+  /// [title]: The title of the page.
   const AirplanePage({super.key, required this.title});
+
+  /// The title of the page.
   final String title;
 
   @override
   State<StatefulWidget> createState() => _AirplanePageState();
 }
 
+/// State class for [AirplanePage], manages state and logic.
 class _AirplanePageState extends State<AirplanePage> {
   late TextEditingController insertTypeCont;
   late TextEditingController insertPassengerCont;
@@ -33,6 +40,7 @@ class _AirplanePageState extends State<AirplanePage> {
   late Airplane selectedAirplane;
   late String appBarTitle;
 
+  ///Initializes page, variables and loads data from EncryptedSharedPrefs
   @override
   void initState() {
     super.initState();
@@ -58,6 +66,7 @@ class _AirplanePageState extends State<AirplanePage> {
     insertRangeCont.text = AirplaneDataRepository.maxRange;
   }
 
+  ///Dispose of unused resources
   @override
   void dispose() {
     insertTypeCont.dispose();
@@ -71,6 +80,7 @@ class _AirplanePageState extends State<AirplanePage> {
     super.dispose();
   }
 
+  /// Initializes the database and loads airplane data.
   void initDatabase() async {
     db = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
     airplaneDAO = db.airplaneDao;
@@ -80,6 +90,8 @@ class _AirplanePageState extends State<AirplanePage> {
     });
   }
 
+  /// Validates and inserts a new airplane into the database. Then displays a SnackBar asking if the user would
+  /// like to save the data they just entered for future use to EncryptedSharedPreferences
   insertAirplane() {
     setState(() {
       if (!validation.validateType(insertTypeCont.value.text)) {
@@ -141,6 +153,7 @@ class _AirplanePageState extends State<AirplanePage> {
     });
   }
 
+  /// Updates the details of the selected airplane.
   updateAirplane() {
     setState(() {
       airplanes[selectedRow].airplaneType = detailsTypeCont.value.text;
@@ -160,10 +173,11 @@ class _AirplanePageState extends State<AirplanePage> {
     });
   }
 
+  /// Deletes the selected airplane from the database.
   deleteAirplane() {
     setState(() {
       airplanes.remove(airplanes[selectedRow]);
-      airplaneDAO.delete(selectedRow);
+      airplaneDAO.delete(selectedAirplane.id);
       selectedRow = -1;
       rowSelected = false;
       appBarTitle = "Airplane Operations";
@@ -171,6 +185,8 @@ class _AirplanePageState extends State<AirplanePage> {
     });
   }
 
+  /// Creates and displays an error [SnackBar] with [errorMsg].
+  /// [errorMsg]: The error message
   createErrorSnackBar(String errorMsg) {
     SnackBar snackBar = SnackBar(content: Text(errorMsg), showCloseIcon: true);
     Future.delayed(const Duration(seconds: 1)).then((_) {
@@ -178,6 +194,10 @@ class _AirplanePageState extends State<AirplanePage> {
     });
   }
 
+  /// Widget for the control panel in portrait mode.
+  /// [size]: The size of the screen.
+  /// [textFieldScalar]: Scalar factor for text fields.
+  /// [vertPadding]: Vertical padding between elements.
   Widget controlPanel(Size size, double textFieldScalar, double vertPadding) {
     return Column(
       children: [
@@ -340,6 +360,9 @@ class _AirplanePageState extends State<AirplanePage> {
     );
   }
 
+  /// Widget for the list view of airplanes.
+  /// [width]: Width of the list view.
+  /// [height]: Height of the list view.
   Widget listView(double width, double height) {
     return Container(
       width: width,
@@ -419,6 +442,10 @@ class _AirplanePageState extends State<AirplanePage> {
     );
   }
 
+  /// Widget for displaying details of a selected airplane.
+  /// [size]: Size of the screen.
+  /// [textFieldScalar]: Scalar factor for text fields.
+  /// [vertPadding]: Vertical padding between elements.
   Widget details(Size size, double textFieldScalar, double vertPadding) {
     return Column(
       children: [
@@ -610,6 +637,8 @@ class _AirplanePageState extends State<AirplanePage> {
     );
   }
 
+  /// Widget to display in portrait mode.
+  /// [size]: Size of the screen.
   Widget portraitWidget(Size size) {
     Widget widget;
     if (!rowSelected) {
@@ -634,6 +663,8 @@ class _AirplanePageState extends State<AirplanePage> {
     }
   }
 
+  /// Widget to display in landscape mode.
+  /// [size]: Size of the screen.
   Widget landscapeWidget(Size size) {
     Widget widget;
     if (!rowSelected) {
@@ -649,6 +680,8 @@ class _AirplanePageState extends State<AirplanePage> {
     }
   }
 
+  ///Builds the page
+  ///[context]: The build context
   @override
   Widget build(BuildContext context) {
     return SafeArea(
