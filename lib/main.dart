@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale("en_US"), //English US (Default)
+        Locale("en"), //English US (Default)
         Locale("ja") //Japanese (Dan)
       ],
       debugShowCheckedModeBanner: false,
