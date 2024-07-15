@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'airplane_page.dart';
 
@@ -20,17 +22,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale("en_US"), //English US (Default)
+        Locale("ja") //Japanese (Dan)
+      ],
       debugShowCheckedModeBanner: false,
       title: 'Airline Management',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-     initialRoute: "/",
+      initialRoute: "/",
       routes: {
-        '/': (context) => const MyHomePage(title: "Turbulence Airlines Operations"),
+        '/': (context) =>
+            MyHomePage(title: AppLocalizations.of(context)!.title),
         // '/customer': ,
-        '/airplane': (context) => const AirplanePage(title: "Airplane Management"),
+        '/airplane': (context) =>
+            AirplanePage(title: AppLocalizations.of(context)!.title),
         // '/flight': ,
         // '/reservation: '
       },
@@ -41,6 +55,7 @@ class MyApp extends StatelessWidget {
 /// Homepage widget for the application.
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   /// The title of the homepage.
   final String title;
 
@@ -59,12 +74,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget controlPanel() {
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
           child: Text(
-            "Turbulence Airlines Operations",
+            AppLocalizations.of(context)!.turbulenceAirlinesOperations,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.white,
                 fontFamily: "Satoshi",
                 fontSize: 35,
@@ -72,73 +87,101 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         ElevatedButton(
-            onPressed: () {Navigator.pushNamed(context, '/customer'); },
+            onPressed: () {
+              Navigator.pushNamed(context, '/customer');
+            },
             style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
-                foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
-                overlayColor: MaterialStateColor.resolveWith((states) => Colors.black12)),
-            child: const SizedBox(
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: SizedBox(
                 width: 250,
                 height: 30,
-                child: Row(
-                    children: [
-                      Icon(Icons.person, color: Colors.greenAccent,),
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                      Text("Customer Management", style: TextStyle(color: Colors.white, fontFamily: "Satoshi"))]
-                )
-            )
-        ),
+                child: Row(children: [
+                  const Icon(
+                    Icons.person,
+                    color: Colors.greenAccent,
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  Text(AppLocalizations.of(context)!.customerManagement,
+                      style:
+                          const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ]))),
         ElevatedButton(
-            onPressed: () {Navigator.pushNamed(context, '/airplane'); },
+            onPressed: () {
+              Navigator.pushNamed(context, '/airplane');
+            },
             style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
-                foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
-                overlayColor: MaterialStateColor.resolveWith((states) => Colors.black12)),
-            child: const SizedBox(
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: SizedBox(
                 width: 250,
                 height: 30,
-                child: Row(
-                    children: [
-                      Icon(Icons.airplanemode_active, color: Colors.greenAccent,),
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                      Text("Airplane Management", style: TextStyle(color: Colors.white, fontFamily: "Satoshi"))]
-                )
-            )
-        ),
+                child: Row(children: [
+                  const Icon(
+                    Icons.airplanemode_active,
+                    color: Colors.greenAccent,
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  Text(AppLocalizations.of(context)!.airplaneManagement,
+                      style:
+                          const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ]))),
         ElevatedButton(
-            onPressed: () {Navigator.pushNamed(context, '/flight'); },
+            onPressed: () {
+              Navigator.pushNamed(context, '/flight');
+            },
             style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
-                foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
-                overlayColor: MaterialStateColor.resolveWith((states) => Colors.black12)),
-            child: const SizedBox(
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: SizedBox(
                 width: 250,
                 height: 30,
-                child: Row(
-                    children: [
-                      Icon(Icons.travel_explore, color: Colors.greenAccent,),
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                      Text("Flight Management", style: TextStyle(color: Colors.white, fontFamily: "Satoshi"))]
-                )
-            )
-        ),
+                child: Row(children: [
+                  const Icon(
+                    Icons.travel_explore,
+                    color: Colors.greenAccent,
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  Text(AppLocalizations.of(context)!.flightManagement,
+                      style:
+                          const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ]))),
         ElevatedButton(
-            onPressed: () {Navigator.pushNamed(context, '/reservation'); },
+            onPressed: () {
+              Navigator.pushNamed(context, '/reservation');
+            },
             style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
-                foregroundColor: MaterialStateColor.resolveWith((states) => Colors.black38),
-                overlayColor: MaterialStateColor.resolveWith((states) => Colors.black12)),
-            child: const SizedBox(
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: SizedBox(
                 width: 250,
                 height: 30,
-                child: Row(
-                    children: [
-                      Icon(Icons.airplane_ticket, color: Colors.greenAccent,),
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                      Text("Reservation Management", style: TextStyle(color: Colors.white, fontFamily: "Satoshi"))]
-                )
-            )
-        ),
+                child: Row(children: [
+                  const Icon(
+                    Icons.airplane_ticket,
+                    color: Colors.greenAccent,
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  Text(AppLocalizations.of(context)!.reservationManagement,
+                      style:
+                          const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ]))),
       ],
     );
   }
@@ -149,7 +192,8 @@ class _MyHomePageState extends State<MyHomePage> {
   /// - [height]: Height of the container.
   /// - [colWidth]: Width of each column in the DataTable.
   /// - [fontSize]: Font size of the text in DataTable headers.
-  Widget flightList(double width, double height, double colWidth, double fontSize) {
+  Widget flightList(
+      double width, double height, double colWidth, double fontSize) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -160,35 +204,45 @@ class _MyHomePageState extends State<MyHomePage> {
               borderRadius: BorderRadius.circular(20), color: Colors.black54),
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                child: Text("Scheduled Flight List",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: "Satoshi")),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: Text(AppLocalizations.of(context)!.scheduledFlightList,
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontFamily: "Satoshi")),
               ),
-              InteractiveViewer(child: DataTable(
-                headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black54),
-                columns: [
-                  DataColumn(
-                    label: SizedBox(
-                        width: colWidth,
-                        child:
-                        Text("Depart City", style: TextStyle(color: Colors.white, fontSize: fontSize))),),
-                  DataColumn(
-                    label: SizedBox(
-                        width: colWidth,
-                        child:
-                        Text("Arrive City", style: TextStyle(color: Colors.white, fontSize: fontSize))),),
-                  DataColumn(
-                    label: SizedBox(
-                        width: colWidth,
-                        child:
-                        Text("Depart Time", style: TextStyle(color: Colors.white, fontSize: fontSize))),)
-                ],
-                rows: const [
-
-                ],
-              ),),
+              InteractiveViewer(
+                child: DataTable(
+                  headingRowColor: MaterialStateColor.resolveWith(
+                      (states) => Colors.black54),
+                  columns: [
+                    DataColumn(
+                      label: SizedBox(
+                          width: colWidth,
+                          child: Text(AppLocalizations.of(context)!.departCity,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: fontSize))),
+                    ),
+                    DataColumn(
+                      label: SizedBox(
+                          width: colWidth,
+                          child: Text(AppLocalizations.of(context)!.arriveCity,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: fontSize))),
+                    ),
+                    DataColumn(
+                      label: SizedBox(
+                          width: colWidth,
+                          child: Text(AppLocalizations.of(context)!.departTime,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: fontSize))),
+                    )
+                  ],
+                  rows: const [],
+                ),
+              ),
             ],
           ),
         )
@@ -213,12 +267,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.blueAccent,
                     image: DecorationImage(
                         fit: BoxFit.fill,
-                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                        image: const AssetImage("assets/images/plane-wing.png"))),
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                        image:
+                            const AssetImage("assets/images/plane-wing.png"))),
                 child: Column(
                   children: [
                     Expanded(child: controlPanel()),
-                    Padding(padding: const EdgeInsets.symmetric(vertical: 10), child: flightList(size.width - 100, size.height / 2, 45,8))
+                    Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: flightList(
+                            size.width - 100, size.height / 2, 45, 8))
                   ],
                 ),
               ),
@@ -233,16 +292,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: size.width,
                 height: size.height,
                 decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    image: DecorationImage(
-                    fit: BoxFit.fill,
-                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                    image: const AssetImage("assets/images/plane-wing.png")),
+                  color: Colors.blueAccent,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                      image: const AssetImage("assets/images/plane-wing.png")),
                 ),
                 child: Row(
                   children: [
                     Expanded(child: controlPanel()),
-                    Expanded(child: flightList((size.width / 2) - 25, size.height - 55, 80, 10)),
+                    Expanded(
+                        child: flightList(
+                            (size.width / 2) - 25, size.height - 55, 80, 10)),
                   ],
                 ),
               ),
@@ -253,4 +315,3 @@ class _MyHomePageState extends State<MyHomePage> {
     }));
   }
 }
-
