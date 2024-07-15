@@ -177,7 +177,7 @@ class _AirplanePageState extends State<AirplanePage> {
       airplaneDAO.delete(selectedAirplane.id);
       selectedRow = -1;
       rowSelected = false;
-      appBarTitle = "Airplane Operations";
+      appBarTitle = AppLocalizations.of(context)!.airplaneOperations;
       Navigator.pop(context);
     });
   }
