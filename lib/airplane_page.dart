@@ -2,6 +2,7 @@ import 'package:cst2335_group_project/airplane_data_repository.dart';
 import 'package:cst2335_group_project/utils.dart';
 import 'package:cst2335_group_project/validation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'airplane.dart';
 import 'airplane_database.dart';
