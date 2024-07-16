@@ -18,6 +18,11 @@ class _AddReservationPageState extends State<AddReservationPage> {
   List<Customer> customers = [
     Customer(name: 'John Doe', id: '1'),
     Customer(name: 'Jane Smith', id: '2'),
+    Customer(name: 'Rocky Balboa', id: '3'),
+    Customer(name: 'Bruce Wayne', id: '4'),
+    Customer(name: 'Joshua Barrett', id: '5'),
+    Customer(name: 'Darth Vader', id: '6'),
+    Customer(name: 'Luke Skywalker', id: '7'),
     // Add more customers as needed
   ];
 
@@ -33,6 +38,36 @@ class _AddReservationPageState extends State<AddReservationPage> {
       departCity: 'Toronto',
       arriveCity: 'Vancouver',
       departTime: '12:00 PM',
+    ),
+    Flight(
+      flightNumber: 'AC 789',
+      departCity: 'Toronto',
+      arriveCity: 'Vancouver',
+      departTime: '04:00 PM',
+    ),
+    Flight(
+      flightNumber: 'AC 112',
+      departCity: 'Ottawa',
+      arriveCity: 'New York',
+      departTime: '08:00 AM',
+    ),
+    Flight(
+      flightNumber: 'AC 113',
+      departCity: 'Ottawa',
+      arriveCity: 'New York',
+      departTime: '11:30 AM',
+    ),
+    Flight(
+      flightNumber: 'AC 125',
+      departCity: 'Ottawa',
+      arriveCity: 'Los Angeles',
+      departTime: '01:00 PM',
+    ),
+    Flight(
+      flightNumber: 'AC 268',
+      departCity: 'Ottawa',
+      arriveCity: 'New York',
+      departTime: '05:00 PM',
     ),
     // Add more flights as needed
   ];
