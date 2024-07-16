@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:cst2335_group_project/reservations_page.dart';
+import 'package:cst2335_group_project/airplane_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -26,14 +26,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-     initialRoute: '/',
+      initialRoute: '/',
       routes: {
         '/': (context) => const MyHomePage(title: "Turbulence Airlines Operations"),
         // '/customer': ,
         //'/airplane': (context) => const AirplanePage(title: "Airplane Management"),
         // '/airplane/details: ,
         // '/flight': ,
-        '/reservation': (context) => const ReservationsPage(),
+        // '/reservation: '
       },
     );
   }
@@ -155,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Text("Scheduled Flight List",
                     style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: "Satoshi")),
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: "Satoshi")),
               ),
               InteractiveViewer(child: DataTable(
                 headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black54),
@@ -222,11 +222,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: size.width,
                 height: size.height,
                 decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    image: DecorationImage(
-                    fit: BoxFit.fill,
-                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                    image: const AssetImage("assets/images/plane-wing.png")),
+                  color: Colors.blueAccent,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                      image: const AssetImage("assets/images/plane-wing.png")),
                 ),
                 child: Row(
                   children: [
@@ -242,4 +242,3 @@ class _MyHomePageState extends State<MyHomePage> {
     }));
   }
 }
-
