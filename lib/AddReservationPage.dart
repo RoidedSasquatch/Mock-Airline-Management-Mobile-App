@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'Customer.dart';
 import 'Flight.dart';
+import 'Reservation.dart';
 
 class AddReservationPage extends StatefulWidget {
-  const AddReservationPage({Key? key}) : super(key: key);
+  final List<Reservation> reservations; // List to store reservations
+
+  const AddReservationPage({Key? key, required this.reservations}) : super(key: key);
 
   @override
   _AddReservationPageState createState() => _AddReservationPageState();
@@ -78,6 +80,27 @@ class _AddReservationPageState extends State<AddReservationPage> {
     });
   }
 
+  void addReservation() {
+    if (selectedCustomer != null && selectedFlight != null) {
+      // Create a new Reservation object
+      Reservation newReservation = Reservation(
+        customer: selectedCustomer!,
+        flight: selectedFlight!,
+        date: selectedDate,
+      );
+
+      // Update the list of reservations
+      setState(() {
+        widget.reservations.add(newReservation);
+      });
+
+      // Navigate back to previous screen after adding reservation
+      Navigator.pop(context, widget.reservations); // Pass back the updated reservations list
+    } else {
+      // Show error message or prompt to select both customer and flight
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,17 +168,7 @@ class _AddReservationPageState extends State<AddReservationPage> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                // Handle reservation submission here
-                if (selectedCustomer != null && selectedFlight != null) {
-                  // Save reservation logic goes here
-                  // For example, you could use a database or store it in memory
-                  // Then navigate back to the reservations page or show confirmation
-                  Navigator.pop(context); // Go back to previous screen after saving
-                } else {
-                  // Show error message or prompt to select both customer and flight
-                }
-              },
+              onPressed: addReservation,
               child: Text('Add Reservation'),
             ),
           ],

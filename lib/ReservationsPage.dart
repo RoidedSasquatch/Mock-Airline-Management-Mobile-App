@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:cst2335_group_project/AddReservationPage.dart';
+import 'AddReservationPage.dart';
+import 'Customer.dart';
+import 'Flight.dart';
+import 'Reservation.dart';
 
 class ReservationsPage extends StatefulWidget {
-  const ReservationsPage({Key? key}) : super(key: key);
+  final List<Reservation> reservations; // List to store reservations
+
+  const ReservationsPage({Key? key, required this.reservations}) : super(key: key);
 
   @override
   _ReservationsPageState createState() => _ReservationsPageState();
 }
 
 class _ReservationsPageState extends State<ReservationsPage> {
+  List<Reservation> reservations = []; // Local list to store reservations
+
+  @override
+  void initState() {
+    super.initState();
+    reservations = widget.reservations; // Initialize with initial reservations
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,13 +33,32 @@ class _ReservationsPageState extends State<ReservationsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final updatedReservations = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddReservationPage()),
+                  MaterialPageRoute(
+                    builder: (context) => AddReservationPage(reservations: reservations),
+                  ),
                 );
+                if (updatedReservations != null) {
+                  setState(() {
+                    reservations = updatedReservations;
+                  });
+                }
               },
               child: Text('Add Reservation'),
+            ),
+            SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: reservations.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text('${reservations[index].customer.name} - ${reservations[index].flight.flightNumber}'),
+                    subtitle: Text('Date: ${reservations[index].date.year}-${reservations[index].date.month}-${reservations[index].date.day}'),
+                  );
+                },
+              ),
             ),
           ],
         ),
