@@ -4,7 +4,7 @@ import 'Flight.dart';
 import 'Reservation.dart';
 
 class AddReservationPage extends StatefulWidget {
-  final List<Reservation> reservations; // List to store reservations
+  final List<Reservation> reservations;
 
   const AddReservationPage({Key? key, required this.reservations}) : super(key: key);
 
@@ -25,7 +25,6 @@ class _AddReservationPageState extends State<AddReservationPage> {
     Customer(name: 'Joshua Barrett', id: '5'),
     Customer(name: 'Darth Vader', id: '6'),
     Customer(name: 'Luke Skywalker', id: '7'),
-    // Add more customers as needed
   ];
 
   List<Flight> flights = [
@@ -71,7 +70,6 @@ class _AddReservationPageState extends State<AddReservationPage> {
       arriveCity: 'New York',
       departTime: '05:00 PM',
     ),
-    // Add more flights as needed
   ];
 
   void handleDateChanged(DateTime date) {
@@ -82,22 +80,20 @@ class _AddReservationPageState extends State<AddReservationPage> {
 
   void addReservation() {
     if (selectedCustomer != null && selectedFlight != null) {
-      // Create a new Reservation object
-      Reservation newReservation = Reservation(
+      final newReservation = Reservation(
         customer: selectedCustomer!,
         flight: selectedFlight!,
         date: selectedDate,
       );
 
-      // Update the list of reservations
-      setState(() {
-        widget.reservations.add(newReservation);
-      });
+      final updatedReservations = List<Reservation>.from(widget.reservations)
+        ..add(newReservation);
 
-      // Navigate back to previous screen after adding reservation
-      Navigator.pop(context, widget.reservations); // Pass back the updated reservations list
+      Navigator.pop(context, updatedReservations); // Pass the updated list back
     } else {
-      // Show error message or prompt to select both customer and flight
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select both a customer and a flight')),
+      );
     }
   }
 

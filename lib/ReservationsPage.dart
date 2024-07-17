@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'AddReservationPage.dart';
-import 'Customer.dart';
-import 'Flight.dart';
 import 'Reservation.dart';
 
 class ReservationsPage extends StatefulWidget {
-  final List<Reservation> reservations; // List to store reservations
+  final List<Reservation> reservations;
 
   const ReservationsPage({Key? key, required this.reservations}) : super(key: key);
 
@@ -14,12 +12,12 @@ class ReservationsPage extends StatefulWidget {
 }
 
 class _ReservationsPageState extends State<ReservationsPage> {
-  List<Reservation> reservations = []; // Local list to store reservations
+  List<Reservation> reservations = [];
 
   @override
   void initState() {
     super.initState();
-    reservations = widget.reservations; // Initialize with initial reservations
+    reservations = List.from(widget.reservations); // Ensure the list is growable
   }
 
   @override
