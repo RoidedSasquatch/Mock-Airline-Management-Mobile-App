@@ -109,6 +109,12 @@ class _ReservationsPageState extends State<ReservationsPage> {
     }
   }
 
+  void _handleDelete(Reservation reservation) {
+    setState(() {
+      reservations.remove(reservation);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,7 +190,10 @@ class _ReservationsPageState extends State<ReservationsPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ReservationDetailsPage(reservation: reservations[index]),
+                                      builder: (context) => ReservationDetailsPage(
+                                        reservation: reservations[index],
+                                        onDelete: _handleDelete,
+                                      ),
                                     ),
                                   );
                                 }
@@ -220,7 +229,10 @@ class _ReservationsPageState extends State<ReservationsPage> {
               ),
               if (isWideScreen && selectedReservation != null)
                 Expanded(
-                  child: ReservationDetailsPage(reservation: selectedReservation!),
+                  child: ReservationDetailsPage(
+                    reservation: selectedReservation!,
+                    onDelete: _handleDelete,
+                  ),
                 ),
             ],
           );

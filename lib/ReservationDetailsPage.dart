@@ -3,14 +3,52 @@ import 'Reservation.dart';
 
 class ReservationDetailsPage extends StatelessWidget {
   final Reservation reservation;
+  final void Function(Reservation) onDelete;
 
-  const ReservationDetailsPage({Key? key, required this.reservation}) : super(key: key);
+  const ReservationDetailsPage({
+    Key? key,
+    required this.reservation,
+    required this.onDelete,
+  }) : super(key: key);
+
+  Future<void> _showDeleteConfirmationDialog(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: Text('Are you sure you want to delete the reservation for ${reservation.customer.name}?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true), // Return true if confirmed
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false), // Return false if canceled
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      onDelete(reservation); // Call the onDelete callback if confirmed
+      Navigator.of(context).pop(); // Close the details page
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reservation Details'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => _showDeleteConfirmationDialog(context),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
