@@ -15,6 +15,7 @@ class ReservationsPage extends StatefulWidget {
 
 class _ReservationsPageState extends State<ReservationsPage> {
   List<Reservation> reservations = [];
+  Reservation? selectedReservation;
   DateTime selectedDate = DateTime.now();
   final TextEditingController customerNameController = TextEditingController();
   final TextEditingController flightNumberController = TextEditingController();
@@ -114,94 +115,116 @@ class _ReservationsPageState extends State<ReservationsPage> {
       appBar: AppBar(
         title: const Text('Reservations'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Input fields for adding reservations
-            TextField(
-              controller: customerNameController,
-              decoration: InputDecoration(labelText: 'Customer Name'),
-            ),
-            TextField(
-              controller: flightNumberController,
-              decoration: InputDecoration(labelText: 'Flight Number'),
-            ),
-            TextField(
-              controller: departCityController,
-              decoration: InputDecoration(labelText: 'Departure City'),
-            ),
-            TextField(
-              controller: arriveCityController,
-              decoration: InputDecoration(labelText: 'Arrival City'),
-            ),
-            TextField(
-              controller: departTimeController,
-              decoration: InputDecoration(labelText: 'Departure Time'),
-            ),
-            TextField(
-              controller: arriveTimeController,
-              decoration: InputDecoration(labelText: 'Arrival Time'),
-            ),
-            TextField(
-              controller: dateController,
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: 'Date',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: _selectDate,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Check if the screen is wide enough for a side-by-side layout
+          final isWideScreen = constraints.maxWidth > 800;
+
+          return Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      // Input fields for adding reservations
+                      TextField(
+                        controller: customerNameController,
+                        decoration: InputDecoration(labelText: 'Customer Name'),
+                      ),
+                      TextField(
+                        controller: flightNumberController,
+                        decoration: InputDecoration(labelText: 'Flight Number'),
+                      ),
+                      TextField(
+                        controller: departCityController,
+                        decoration: InputDecoration(labelText: 'Departure City'),
+                      ),
+                      TextField(
+                        controller: arriveCityController,
+                        decoration: InputDecoration(labelText: 'Arrival City'),
+                      ),
+                      TextField(
+                        controller: departTimeController,
+                        decoration: InputDecoration(labelText: 'Departure Time'),
+                      ),
+                      TextField(
+                        controller: arriveTimeController,
+                        decoration: InputDecoration(labelText: 'Arrival Time'),
+                      ),
+                      TextField(
+                        controller: dateController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Date',
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.calendar_today),
+                            onPressed: _selectDate,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: addReservationFromInput,
+                        child: Text('Add Reservation'),
+                      ),
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: reservations.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text('ID: ${reservations[index].id} - ${reservations[index].customer.name} - ${reservations[index].flight.flightNumber}'),
+                              subtitle: Text('Date: ${reservations[index].date.year}-${reservations[index].date.month}-${reservations[index].date.day}'),
+                              onTap: () {
+                                setState(() {
+                                  selectedReservation = reservations[index];
+                                });
+                                if (!isWideScreen) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ReservationDetailsPage(reservation: reservations[index]),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final updatedReservations = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddReservationPage(
+                                reservations: reservations,
+                                nextId: _reservationIdCounter + 1, // Pass the updated ID counter
+                              ),
+                            ),
+                          );
+                          if (updatedReservations != null) {
+                            setState(() {
+                              reservations = updatedReservations;
+                              _updateIdCounter(); // Update the ID counter based on the updated list
+                            });
+                          }
+                        },
+                        child: Text('Add Reservation via Form'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: addReservationFromInput,
-              child: Text('Add Reservation'),
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: reservations.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('ID: ${reservations[index].id} - ${reservations[index].customer.name} - ${reservations[index].flight.flightNumber}'),
-                    subtitle: Text('Date: ${reservations[index].date.year}-${reservations[index].date.month}-${reservations[index].date.day}'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ReservationDetailsPage(reservation: reservations[index]),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                final updatedReservations = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddReservationPage(
-                      reservations: reservations,
-                      nextId: _reservationIdCounter + 1, // Pass the updated ID counter
-                    ),
-                  ),
-                );
-                if (updatedReservations != null) {
-                  setState(() {
-                    reservations = updatedReservations;
-                    _updateIdCounter(); // Update the ID counter based on the updated list
-                  });
-                }
-              },
-              child: Text('Add Reservation via Form'),
-            ),
-          ],
-        ),
+              if (isWideScreen && selectedReservation != null)
+                Expanded(
+                  child: ReservationDetailsPage(reservation: selectedReservation!),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
