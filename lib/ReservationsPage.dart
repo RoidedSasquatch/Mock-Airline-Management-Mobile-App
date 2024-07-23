@@ -16,11 +16,93 @@ class ReservationsPage extends StatefulWidget {
 
 class _ReservationsPageState extends State<ReservationsPage> {
   List<Reservation> reservations = [];
+  DateTime selectedDate = DateTime.now();
+  Customer? selectedCustomer;
+  Flight? selectedFlight;
+
+  // Controllers for TextField input
+  final TextEditingController customerNameController = TextEditingController();
+  final TextEditingController flightNumberController = TextEditingController();
+  final TextEditingController departCityController = TextEditingController();
+  final TextEditingController arriveCityController = TextEditingController();
+  final TextEditingController departTimeController = TextEditingController();
+  final TextEditingController arriveTimeController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     reservations = widget.reservations;
+    dateController.text = _formatDate(selectedDate); // Initialize with the current date
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
+
+  void _selectDate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(), // Prevent selecting past dates
+      lastDate: DateTime.now().add(Duration(days: 365)), // Allow selecting dates within one year
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        dateController.text = _formatDate(selectedDate);
+      });
+    }
+  }
+
+  void addReservationFromInput() {
+    final customerName = customerNameController.text;
+    final flightNumber = flightNumberController.text;
+    final departCity = departCityController.text;
+    final arriveCity = arriveCityController.text;
+    final departTime = departTimeController.text;
+    final arriveTime = arriveTimeController.text;
+    final date = dateController.text;
+
+    if (customerName.isNotEmpty &&
+        flightNumber.isNotEmpty &&
+        departCity.isNotEmpty &&
+        arriveCity.isNotEmpty &&
+        departTime.isNotEmpty &&
+        arriveTime.isNotEmpty &&
+        date.isNotEmpty) {
+      final newCustomer = Customer(name: customerName, id: (reservations.length + 1).toString());
+      final newFlight = Flight(
+        flightNumber: flightNumber,
+        departCity: departCity,
+        arriveCity: arriveCity,
+        departTime: departTime,
+        arriveTime: arriveTime,
+      );
+
+      final newReservation = Reservation(
+        customer: newCustomer,
+        flight: newFlight,
+        date: selectedDate,
+      );
+
+      setState(() {
+        reservations.add(newReservation);
+      });
+
+      customerNameController.clear();
+      flightNumberController.clear();
+      departCityController.clear();
+      arriveCityController.clear();
+      departTimeController.clear();
+      arriveTimeController.clear();
+      dateController.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please fill all fields')),
+      );
+    }
   }
 
   @override
@@ -29,24 +111,49 @@ class _ReservationsPageState extends State<ReservationsPage> {
       appBar: AppBar(
         title: const Text('Reservations'),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Input fields for adding reservations
+            TextField(
+              controller: customerNameController,
+              decoration: InputDecoration(labelText: 'Customer Name'),
+            ),
+            TextField(
+              controller: flightNumberController,
+              decoration: InputDecoration(labelText: 'Flight Number'),
+            ),
+            TextField(
+              controller: departCityController,
+              decoration: InputDecoration(labelText: 'Departure City'),
+            ),
+            TextField(
+              controller: arriveCityController,
+              decoration: InputDecoration(labelText: 'Arrival City'),
+            ),
+            TextField(
+              controller: departTimeController,
+              decoration: InputDecoration(labelText: 'Departure Time'),
+            ),
+            TextField(
+              controller: arriveTimeController,
+              decoration: InputDecoration(labelText: 'Arrival Time'),
+            ),
+            TextField(
+              controller: dateController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Date',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.calendar_today),
+                  onPressed: _selectDate,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () async {
-                final updatedReservations = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddReservationPage(reservations: reservations),
-                  ),
-                );
-                if (updatedReservations != null) {
-                  setState(() {
-                    reservations = updatedReservations;
-                  });
-                }
-              },
+              onPressed: addReservationFromInput,
               child: Text('Add Reservation'),
             ),
             SizedBox(height: 20),
@@ -68,6 +175,23 @@ class _ReservationsPageState extends State<ReservationsPage> {
                   );
                 },
               ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                final updatedReservations = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddReservationPage(reservations: reservations),
+                  ),
+                );
+                if (updatedReservations != null) {
+                  setState(() {
+                    reservations = updatedReservations;
+                  });
+                }
+              },
+              child: Text('Add Reservation via Form'),
             ),
           ],
         ),
