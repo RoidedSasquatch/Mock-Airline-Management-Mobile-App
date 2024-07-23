@@ -5,8 +5,9 @@ import 'Reservation.dart';
 
 class AddReservationPage extends StatefulWidget {
   final List<Reservation> reservations;
+  final int nextId; // Add this parameter
 
-  const AddReservationPage({Key? key, required this.reservations}) : super(key: key);
+  const AddReservationPage({Key? key, required this.reservations, required this.nextId}) : super(key: key);
 
   @override
   _AddReservationPageState createState() => _AddReservationPageState();
@@ -17,20 +18,14 @@ class _AddReservationPageState extends State<AddReservationPage> {
   Flight? selectedFlight;
   DateTime selectedDate = DateTime.now();
 
-  // List of customers with auto-generated IDs
-  List<Customer> customers = List.generate(
-    7,
-        (index) => Customer.withAutoId(name: _customerNames[index], id: '${index + 1}'),
-  );
-
-  static const List<String> _customerNames = [
-    'John Doe',
-    'Jane Smith',
-    'Rocky Balboa',
-    'Bruce Wayne',
-    'Joshua Barrett',
-    'Darth Vader',
-    'Luke Skywalker',
+  List<Customer> customers = [
+    Customer(name: 'John Doe'),
+    Customer(name: 'Jane Smith'),
+    Customer(name: 'Rocky Balboa'),
+    Customer(name: 'Bruce Wayne'),
+    Customer(name: 'Joshua Barrett'),
+    Customer(name: 'Darth Vader'),
+    Customer(name: 'Luke Skywalker'),
   ];
 
   List<Flight> flights = [
@@ -94,6 +89,7 @@ class _AddReservationPageState extends State<AddReservationPage> {
   void addReservation() {
     if (selectedCustomer != null && selectedFlight != null) {
       final newReservation = Reservation(
+        id: widget.nextId.toString(), // Use the next available ID
         customer: selectedCustomer!,
         flight: selectedFlight!,
         date: selectedDate,

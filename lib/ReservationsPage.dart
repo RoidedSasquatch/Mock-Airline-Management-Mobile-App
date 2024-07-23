@@ -7,7 +7,6 @@ import 'ReservationDetailsPage.dart';
 
 class ReservationsPage extends StatefulWidget {
   final List<Reservation> reservations;
-
   const ReservationsPage({Key? key, required this.reservations}) : super(key: key);
 
   @override
@@ -17,10 +16,6 @@ class ReservationsPage extends StatefulWidget {
 class _ReservationsPageState extends State<ReservationsPage> {
   List<Reservation> reservations = [];
   DateTime selectedDate = DateTime.now();
-  Customer? selectedCustomer;
-  Flight? selectedFlight;
-
-  // Controllers for TextField input
   final TextEditingController customerNameController = TextEditingController();
   final TextEditingController flightNumberController = TextEditingController();
   final TextEditingController departCityController = TextEditingController();
@@ -29,11 +24,20 @@ class _ReservationsPageState extends State<ReservationsPage> {
   final TextEditingController arriveTimeController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
 
+  int _reservationIdCounter = 0; // Counter for generating IDs
+
   @override
   void initState() {
     super.initState();
     reservations = widget.reservations;
     dateController.text = _formatDate(selectedDate); // Initialize with the current date
+    _updateIdCounter();
+  }
+
+  void _updateIdCounter() {
+    if (reservations.isNotEmpty) {
+      _reservationIdCounter = reservations.map((r) => int.parse(r.id)).reduce((a, b) => a > b ? a : b);
+    }
   }
 
   String _formatDate(DateTime date) {
@@ -72,23 +76,22 @@ class _ReservationsPageState extends State<ReservationsPage> {
         departTime.isNotEmpty &&
         arriveTime.isNotEmpty &&
         date.isNotEmpty) {
-      final newCustomer = Customer(name: customerName, id: (reservations.length + 1).toString());
-      final newFlight = Flight(
-        flightNumber: flightNumber,
-        departCity: departCity,
-        arriveCity: arriveCity,
-        departTime: departTime,
-        arriveTime: arriveTime,
-      );
-
       final newReservation = Reservation(
-        customer: newCustomer,
-        flight: newFlight,
+        id: (_reservationIdCounter + 1).toString(), // Assign ID
+        customer: Customer(name: customerName), // Empty ID for Customer
+        flight: Flight(
+          flightNumber: flightNumber,
+          departCity: departCity,
+          arriveCity: arriveCity,
+          departTime: departTime,
+          arriveTime: arriveTime,
+        ),
         date: selectedDate,
       );
 
       setState(() {
         reservations.add(newReservation);
+        _reservationIdCounter++; // Increment the ID counter
       });
 
       customerNameController.clear();
@@ -162,7 +165,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
                 itemCount: reservations.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text('${reservations[index].customer.name} - ${reservations[index].flight.flightNumber}'),
+                    title: Text('ID: ${reservations[index].id} - ${reservations[index].customer.name} - ${reservations[index].flight.flightNumber}'),
                     subtitle: Text('Date: ${reservations[index].date.year}-${reservations[index].date.month}-${reservations[index].date.day}'),
                     onTap: () {
                       Navigator.push(
@@ -182,12 +185,16 @@ class _ReservationsPageState extends State<ReservationsPage> {
                 final updatedReservations = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddReservationPage(reservations: reservations),
+                    builder: (context) => AddReservationPage(
+                      reservations: reservations,
+                      nextId: _reservationIdCounter + 1, // Pass the updated ID counter
+                    ),
                   ),
                 );
                 if (updatedReservations != null) {
                   setState(() {
                     reservations = updatedReservations;
+                    _updateIdCounter(); // Update the ID counter based on the updated list
                   });
                 }
               },
