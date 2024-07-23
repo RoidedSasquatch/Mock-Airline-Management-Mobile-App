@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'AddReservationPage.dart';
 import 'Customer.dart';
 import 'Flight.dart';
@@ -6,8 +7,7 @@ import 'Reservation.dart';
 import 'ReservationDetailsPage.dart';
 
 class ReservationsPage extends StatefulWidget {
-  final List<Reservation> reservations;
-  const ReservationsPage({Key? key, required this.reservations}) : super(key: key);
+  const ReservationsPage({Key? key}) : super(key: key);
 
   @override
   _ReservationsPageState createState() => _ReservationsPageState();
@@ -30,9 +30,23 @@ class _ReservationsPageState extends State<ReservationsPage> {
   @override
   void initState() {
     super.initState();
-    reservations = widget.reservations;
+    _loadReservations();
     dateController.text = _formatDate(selectedDate);
-    _updateIdCounter();
+  }
+
+  void _loadReservations() async {
+    final sp = await EncryptedSharedPreferences().getInstance();
+    final savedReservations = sp.getString('reservations') ?? '';
+    setState(() {
+      reservations = _parseReservations(savedReservations);
+      _updateIdCounter();
+    });
+  }
+
+  void _saveReservations() async {
+    final sp = await EncryptedSharedPreferences().getInstance();
+    final reservationsText = _formatReservations(reservations);
+    sp.setString('reservations', reservationsText);
   }
 
   void _updateIdCounter() {
@@ -90,23 +104,50 @@ class _ReservationsPageState extends State<ReservationsPage> {
         date: selectedDate,
       );
 
-      setState(() {
-        reservations.add(newReservation);
-        _reservationIdCounter++;
-      });
-
-      customerNameController.clear();
-      flightNumberController.clear();
-      departCityController.clear();
-      arriveCityController.clear();
-      departTimeController.clear();
-      arriveTimeController.clear();
-      dateController.clear();
+      _showSaveDialog(newReservation);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please fill all fields')),
       );
     }
+  }
+
+  void _showSaveDialog(Reservation newReservation) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Save Reservation'),
+          content: const Text('Would you like to save this reservation for next time?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  reservations.add(newReservation);
+                  _reservationIdCounter++;
+                  _saveReservations();
+                  customerNameController.clear();
+                  flightNumberController.clear();
+                  departCityController.clear();
+                  arriveCityController.clear();
+                  departTimeController.clear();
+                  arriveTimeController.clear();
+                  dateController.clear();
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _handleDelete(Reservation reservation) {
@@ -115,7 +156,33 @@ class _ReservationsPageState extends State<ReservationsPage> {
       if (selectedReservation == reservation) {
         selectedReservation = null;
       }
+      _saveReservations();
     });
+  }
+
+  List<Reservation> _parseReservations(String text) {
+    final lines = text.split('\n');
+    return lines.where((line) => line.isNotEmpty).map((line) {
+      final parts = line.split('|');
+      return Reservation(
+        id: parts[0],
+        customer: Customer(name: parts[1]),
+        flight: Flight(
+          flightNumber: parts[2],
+          departCity: parts[3],
+          arriveCity: parts[4],
+          departTime: parts[5],
+          arriveTime: parts[6],
+        ),
+        date: DateTime.parse(parts[7]),
+      );
+    }).toList();
+  }
+
+  String _formatReservations(List<Reservation> reservations) {
+    return reservations.map((res) {
+      return '${res.id}|${res.customer.name}|${res.flight.flightNumber}|${res.flight.departCity}|${res.flight.arriveCity}|${res.flight.departTime}|${res.flight.arriveTime}|${res.date.toIso8601String()}';
+    }).join('\n');
   }
 
   @override
@@ -220,6 +287,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
                             setState(() {
                               reservations = updatedReservations;
                               _updateIdCounter();
+                              _saveReservations();
                             });
                           }
                         },

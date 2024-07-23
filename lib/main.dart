@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         //'/airplane': (context) => const AirplanePage(title: "Airplane Management"),
         // '/airplane/details: ,
         // '/flight': ,
-         '/reservation': (context) => const ReservationsPage(reservations: [],),
+         '/reservation': (context) => const ReservationsPage(),
       },
     );
   }
