@@ -17,14 +17,20 @@ class _AddReservationPageState extends State<AddReservationPage> {
   Flight? selectedFlight;
   DateTime selectedDate = DateTime.now();
 
-  List<Customer> customers = [
-    Customer(name: 'John Doe', id: '1'),
-    Customer(name: 'Jane Smith', id: '2'),
-    Customer(name: 'Rocky Balboa', id: '3'),
-    Customer(name: 'Bruce Wayne', id: '4'),
-    Customer(name: 'Joshua Barrett', id: '5'),
-    Customer(name: 'Darth Vader', id: '6'),
-    Customer(name: 'Luke Skywalker', id: '7'),
+  // List of customers with auto-generated IDs
+  List<Customer> customers = List.generate(
+    7,
+        (index) => Customer.withAutoId(name: _customerNames[index], id: '${index + 1}'),
+  );
+
+  static const List<String> _customerNames = [
+    'John Doe',
+    'Jane Smith',
+    'Rocky Balboa',
+    'Bruce Wayne',
+    'Joshua Barrett',
+    'Darth Vader',
+    'Luke Skywalker',
   ];
 
   List<Flight> flights = [
