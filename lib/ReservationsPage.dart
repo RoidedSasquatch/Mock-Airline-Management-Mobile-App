@@ -25,13 +25,13 @@ class _ReservationsPageState extends State<ReservationsPage> {
   final TextEditingController arriveTimeController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
 
-  int _reservationIdCounter = 0; // Counter for generating IDs
+  int _reservationIdCounter = 0;
 
   @override
   void initState() {
     super.initState();
     reservations = widget.reservations;
-    dateController.text = _formatDate(selectedDate); // Initialize with the current date
+    dateController.text = _formatDate(selectedDate);
     _updateIdCounter();
   }
 
@@ -49,8 +49,8 @@ class _ReservationsPageState extends State<ReservationsPage> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime.now(), // Prevent selecting past dates
-      lastDate: DateTime.now().add(Duration(days: 365)), // Allow selecting dates within one year
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(Duration(days: 365)),
     );
 
     if (picked != null && picked != selectedDate) {
@@ -78,8 +78,8 @@ class _ReservationsPageState extends State<ReservationsPage> {
         arriveTime.isNotEmpty &&
         date.isNotEmpty) {
       final newReservation = Reservation(
-        id: (_reservationIdCounter + 1).toString(), // Assign ID
-        customer: Customer(name: customerName), // Empty ID for Customer
+        id: (_reservationIdCounter + 1).toString(),
+        customer: Customer(name: customerName),
         flight: Flight(
           flightNumber: flightNumber,
           departCity: departCity,
@@ -92,7 +92,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
 
       setState(() {
         reservations.add(newReservation);
-        _reservationIdCounter++; // Increment the ID counter
+        _reservationIdCounter++;
       });
 
       customerNameController.clear();
@@ -112,6 +112,9 @@ class _ReservationsPageState extends State<ReservationsPage> {
   void _handleDelete(Reservation reservation) {
     setState(() {
       reservations.remove(reservation);
+      if (selectedReservation == reservation) {
+        selectedReservation = null;
+      }
     });
   }
 
@@ -123,7 +126,6 @@ class _ReservationsPageState extends State<ReservationsPage> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Check if the screen is wide enough for a side-by-side layout
           final isWideScreen = constraints.maxWidth > 800;
 
           return Row(
@@ -133,7 +135,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      // Input fields for adding reservations
+                      // Input fields
                       TextField(
                         controller: customerNameController,
                         decoration: InputDecoration(labelText: 'Customer Name'),
@@ -210,14 +212,14 @@ class _ReservationsPageState extends State<ReservationsPage> {
                             MaterialPageRoute(
                               builder: (context) => AddReservationPage(
                                 reservations: reservations,
-                                nextId: _reservationIdCounter + 1, // Pass the updated ID counter
+                                nextId: _reservationIdCounter + 1,
                               ),
                             ),
                           );
                           if (updatedReservations != null) {
                             setState(() {
                               reservations = updatedReservations;
-                              _updateIdCounter(); // Update the ID counter based on the updated list
+                              _updateIdCounter();
                             });
                           }
                         },

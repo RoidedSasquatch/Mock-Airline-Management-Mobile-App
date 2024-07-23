@@ -20,11 +20,11 @@ class ReservationDetailsPage extends StatelessWidget {
           content: Text('Are you sure you want to delete the reservation for ${reservation.customer.name}?'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(true), // Return true if confirmed
+              onPressed: () => Navigator.of(context).pop(true),
               child: const Text('Yes'),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(false), // Return false if canceled
+              onPressed: () => Navigator.of(context).pop(false),
               child: const Text('No'),
             ),
           ],
@@ -33,16 +33,18 @@ class ReservationDetailsPage extends StatelessWidget {
     );
 
     if (result == true) {
-      onDelete(reservation); // Call the onDelete callback if confirmed
-      Navigator.of(context).pop(); // Close the details page
+      onDelete(reservation);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reservation Details'),
+        automaticallyImplyLeading: !isLandscape, // Remove back button in landscape mode
         actions: [
           IconButton(
             icon: Icon(Icons.delete),
