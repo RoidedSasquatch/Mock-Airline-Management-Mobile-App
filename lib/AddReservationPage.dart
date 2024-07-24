@@ -139,11 +139,12 @@ class _AddReservationPageState extends State<AddReservationPage> {
         return AlertDialog(
           title: const Text('Instructions'),
           content: const Text(
-              'To add a reservation, please select a customer, a flight, and a date. '
+              'On this page, you can add a reservation through a list of pre-determined options, '
+                  'by selecting a customer, a flight, and a date. '
                   'Once you have made your selections, click the "Add Reservation" button. '
                   'You will be prompted to save the reservation. If you choose to save, '
                   'the reservation will be added to the list and saved for future sessions.'
-                  'If you choose to not save, the reservation will not be added to the list.'
+                  ' If you choose to not save, the reservation will not be added to the list.'
           ),
           actions: <Widget>[
             TextButton(

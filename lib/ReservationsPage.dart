@@ -185,11 +185,41 @@ class _ReservationsPageState extends State<ReservationsPage> {
     }).join('\n');
   }
 
+  void _showInstructionsDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Instructions'),
+          content: const Text(
+              'On this page, you can add a reservation manually and view a list of existing reservations. '
+                  'To add a new reservation, fill in all the text fields and tap the "Add Reservation" button. '
+                  'If done correctly, You will be prompted to save the reservation. If you choose to save, '
+                  'the reservation will be added to the list and saved for future sessions.'
+                  ' If you choose to not save, the reservation will not be added to the list.'
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reservations'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.help_outline),
+            onPressed: _showInstructionsDialog,
+          ),
+        ],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
