@@ -5,7 +5,7 @@ import 'Reservation.dart';
 
 class AddReservationPage extends StatefulWidget {
   final List<Reservation> reservations;
-  final int nextId; // Add this parameter
+  final int nextId;
 
   const AddReservationPage({Key? key, required this.reservations, required this.nextId}) : super(key: key);
 
@@ -86,19 +86,45 @@ class _AddReservationPageState extends State<AddReservationPage> {
     });
   }
 
+  Future<void> _showSaveDialog(Reservation newReservation) async {
+    final shouldSave = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Save Reservation'),
+          content: const Text('Would you like to save this reservation?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldSave == true) {
+      setState(() {
+        widget.reservations.add(newReservation);
+      });
+      Navigator.pop(context, widget.reservations);
+    }
+  }
+
   void addReservation() {
     if (selectedCustomer != null && selectedFlight != null) {
       final newReservation = Reservation(
-        id: widget.nextId.toString(), // Use the next available ID
+        id: widget.nextId.toString(),
         customer: selectedCustomer!,
         flight: selectedFlight!,
         date: selectedDate,
       );
 
-      final updatedReservations = List<Reservation>.from(widget.reservations)
-        ..add(newReservation);
-
-      Navigator.pop(context, updatedReservations); // Pass the updated list back
+      _showSaveDialog(newReservation);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please select both a customer and a flight')),
