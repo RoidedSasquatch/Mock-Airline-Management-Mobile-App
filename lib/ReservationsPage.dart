@@ -233,75 +233,61 @@ class _ReservationsPageState extends State<ReservationsPage> {
           return Row(
             children: [
               Expanded(
+                flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Input fields
-                      TextField(
-                        controller: customerNameController,
-                        decoration: InputDecoration(labelText: 'Customer Name'),
-                      ),
-                      TextField(
-                        controller: flightNumberController,
-                        decoration: InputDecoration(labelText: 'Flight Number'),
-                      ),
-                      TextField(
-                        controller: departCityController,
-                        decoration: InputDecoration(labelText: 'Departure City'),
-                      ),
-                      TextField(
-                        controller: arriveCityController,
-                        decoration: InputDecoration(labelText: 'Arrival City'),
-                      ),
-                      TextField(
-                        controller: departTimeController,
-                        decoration: InputDecoration(labelText: 'Departure Time'),
-                      ),
-                      TextField(
-                        controller: arriveTimeController,
-                        decoration: InputDecoration(labelText: 'Arrival Time'),
-                      ),
-                      TextField(
-                        controller: dateController,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          labelText: 'Date',
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.calendar_today),
-                            onPressed: _selectDate,
-                          ),
-                        ),
-                      ),
+                      _buildTextField(customerNameController, 'Customer Name'),
+                      _buildTextField(flightNumberController, 'Flight Number'),
+                      _buildTextField(departCityController, 'Departure City'),
+                      _buildTextField(arriveCityController, 'Arrival City'),
+                      _buildTextField(departTimeController, 'Departure Time'),
+                      _buildTextField(arriveTimeController, 'Arrival Time'),
+                      _buildDateField(dateController, _selectDate),
                       SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: addReservationFromInput,
                         child: Text('Add Reservation'),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                        ),
                       ),
                       SizedBox(height: 20),
                       Expanded(
                         child: ListView.builder(
                           itemCount: reservations.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text('ID: ${reservations[index].id} - ${reservations[index].customer.name} - ${reservations[index].flight.flightNumber}'),
-                              subtitle: Text('Date: ${reservations[index].date.year}-${reservations[index].date.month}-${reservations[index].date.day}'),
-                              onTap: () {
-                                setState(() {
-                                  selectedReservation = reservations[index];
-                                });
-                                if (!isWideScreen) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ReservationDetailsPage(
-                                        reservation: reservations[index],
-                                        onDelete: _handleDelete,
+                            return Card(
+                              margin: EdgeInsets.symmetric(vertical: 8),
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(12),
+                                leading: Icon(Icons.flight_takeoff, color: Colors.blue),
+                                title: Text(
+                                  'ID: ${reservations[index].id} - ${reservations[index].customer.name} - ${reservations[index].flight.flightNumber}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text('Date: ${reservations[index].date.year}-${reservations[index].date.month}-${reservations[index].date.day}'),
+                                onTap: () {
+                                  setState(() {
+                                    selectedReservation = reservations[index];
+                                  });
+                                  if (!isWideScreen) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ReservationDetailsPage(
+                                          reservation: reservations[index],
+                                          onDelete: _handleDelete,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }
-                              },
+                                    );
+                                  }
+                                },
+                              ),
                             );
                           },
                         ),
@@ -327,6 +313,10 @@ class _ReservationsPageState extends State<ReservationsPage> {
                           }
                         },
                         child: Text('Add Reservation via Form'),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white, backgroundColor: Colors.green,
+                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                        ),
                       ),
                     ],
                   ),
@@ -334,6 +324,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
               ),
               if (isWideScreen && selectedReservation != null)
                 Expanded(
+                  flex: 3,
                   child: ReservationDetailsPage(
                     reservation: selectedReservation!,
                     onDelete: _handleDelete,
@@ -342,6 +333,39 @@ class _ReservationsPageState extends State<ReservationsPage> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String labelText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateField(TextEditingController controller, VoidCallback onTap) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: 'Date',
+          border: OutlineInputBorder(),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.calendar_today),
+            onPressed: onTap,
+          ),
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        ),
       ),
     );
   }
