@@ -248,15 +248,49 @@ class _ReservationsPageState extends State<ReservationsPage> {
                       _buildTextField(arriveTimeController, 'Arrival Time'),
                       _buildDateField(dateController, _selectDate),
                       SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: addReservationFromInput,
-                        child: Text('Add Reservation'),
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white, backgroundColor: Colors.blue,
-                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                        ),
+
+                      // Buttons in a row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            onPressed: addReservationFromInput,
+                            child: Text('Add Reservation'),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final updatedReservations = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddReservationPage(
+                                    reservations: reservations,
+                                    nextId: _reservationIdCounter + 1,
+                                  ),
+                                ),
+                              );
+                              if (updatedReservations != null) {
+                                setState(() {
+                                  reservations = updatedReservations;
+                                  _updateIdCounter();
+                                  _saveReservations();
+                                });
+                              }
+                            },
+                            child: Text('Add Reservation via Form'),
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white, backgroundColor: Colors.green,
+                              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 20),
+
+                      // Reservations list
                       Expanded(
                         child: ListView.builder(
                           itemCount: reservations.length,
@@ -292,32 +326,6 @@ class _ReservationsPageState extends State<ReservationsPage> {
                           },
                         ),
                       ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final updatedReservations = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddReservationPage(
-                                reservations: reservations,
-                                nextId: _reservationIdCounter + 1,
-                              ),
-                            ),
-                          );
-                          if (updatedReservations != null) {
-                            setState(() {
-                              reservations = updatedReservations;
-                              _updateIdCounter();
-                              _saveReservations();
-                            });
-                          }
-                        },
-                        child: Text('Add Reservation via Form'),
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white, backgroundColor: Colors.green,
-                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -337,35 +345,30 @@ class _ReservationsPageState extends State<ReservationsPage> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String labelText) {
+  Widget _buildTextField(TextEditingController controller, String label) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          labelText: labelText,
           border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          labelText: label,
         ),
       ),
     );
   }
 
-  Widget _buildDateField(TextEditingController controller, VoidCallback onTap) {
+  Widget _buildDateField(TextEditingController controller, Function onTap) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
         controller: controller,
-        readOnly: true,
         decoration: InputDecoration(
-          labelText: 'Date',
           border: OutlineInputBorder(),
-          suffixIcon: IconButton(
-            icon: Icon(Icons.calendar_today),
-            onPressed: onTap,
-          ),
-          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          labelText: 'Date',
         ),
+        onTap: () => onTap(),
+        readOnly: true,
       ),
     );
   }
