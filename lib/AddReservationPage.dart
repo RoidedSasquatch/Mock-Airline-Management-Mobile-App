@@ -162,6 +162,8 @@ class _AddReservationPageState extends State<AddReservationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Reservation'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: Icon(Icons.help_outline),
@@ -231,6 +233,9 @@ class _AddReservationPageState extends State<AddReservationPage> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: addReservation,
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white, backgroundColor: Colors.blue,
+              ),
               child: Text('Add Reservation'),
             ),
           ],
