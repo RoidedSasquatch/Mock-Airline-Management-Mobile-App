@@ -5,6 +5,9 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cst2335_group_project/ReservationsPage.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'AppLocalizations.dart';
+
 
 // References
 // https://www.freepik.com/free-photo/transport-fly-clouds-jet-flying_1103165.htm#fromView=search&page=1&position=8&uuid=cff44ecc-8674-43ac-ac5d-1e48bf541006
@@ -14,8 +17,21 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = const Locale('en', ''); // Default to English
+
+  void _setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,21 +42,32 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-     initialRoute: '/',
+      locale: _locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English
+        Locale('fr', ''), // French
+      ],
+      initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: "Turbulence Airlines Operations"),
+        '/': (context) => MyHomePage(title: "Turbulence Airlines Operations", setLocale: _setLocale),
         // '/customer': ,
         //'/airplane': (context) => const AirplanePage(title: "Airplane Management"),
         // '/airplane/details: ,
-        // '/flight': ,
-         '/reservation': (context) => const ReservationsPage(),
+        // '/flight':
+        '/reservation': (context) => const ReservationsPage(),
       },
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title, required void Function(Locale locale) setLocale});
   final String title;
 
   @override
