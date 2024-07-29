@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'Customer.dart';
 import 'Flight.dart';
 import 'Reservation.dart';
-import 'AppLocalizations.dart';
 
 class AddReservationPage extends StatefulWidget {
   final List<Reservation> reservations;
   final int nextId;
-  final void Function(Locale locale) setLocale;
 
-  const AddReservationPage({Key? key, required this.reservations, required this.nextId, required this.setLocale}) : super(key: key);
+  const AddReservationPage({Key? key, required this.reservations, required this.nextId}) : super(key: key);
 
   @override
   _AddReservationPageState createState() => _AddReservationPageState();
@@ -93,16 +91,16 @@ class _AddReservationPageState extends State<AddReservationPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)?.translate('save_reservation') ?? 'Save Reservation'),
-          content: Text(AppLocalizations.of(context)?.translate('save_confirmation') ?? 'Would you like to save this reservation?'),
+          title: const Text('Save Reservation'),
+          content: const Text('Would you like to save this reservation?'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text(AppLocalizations.of(context)?.translate('no') ?? 'No'),
+              child: const Text('No'),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: Text(AppLocalizations.of(context)?.translate('yes') ?? 'Yes'),
+              child: const Text('Yes'),
             ),
           ],
         );
@@ -129,7 +127,7 @@ class _AddReservationPageState extends State<AddReservationPage> {
       _showSaveDialog(newReservation);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)?.translate('select_warning') ?? 'Please select both a customer and a flight')),
+        SnackBar(content: Text('Please select both a customer and a flight')),
       );
     }
   }
@@ -139,18 +137,19 @@ class _AddReservationPageState extends State<AddReservationPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)?.translate('instructions') ?? 'Instructions'),
-          content: Text(AppLocalizations.of(context)?.translate('instructions_content') ??
+          title: const Text('Instructions'),
+          content: const Text(
               'On this page, you can add a reservation through a list of pre-determined options, '
                   'by selecting a customer, a flight, and a date. '
                   'Once you have made your selections, click the "Add Reservation" button. '
                   'You will be prompted to save the reservation. If you choose to save, '
                   'the reservation will be added to the list and saved for future sessions.'
-                  ' If you choose to not save, the reservation will not be added to the list.'),
+                  ' If you choose to not save, the reservation will not be added to the list.'
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(AppLocalizations.of(context)?.translate('ok') ?? 'OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -158,32 +157,16 @@ class _AddReservationPageState extends State<AddReservationPage> {
     );
   }
 
-  void _toggleLanguage() {
-    Locale currentLocale = Localizations.localeOf(context);
-    Locale newLocale = (currentLocale.languageCode == 'en')
-        ? const Locale('fr', '')
-        : const Locale('en', '');
-
-    widget.setLocale(newLocale);
-    // This ensures the UI rebuilds and applies the new locale
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-    var appLocalizations = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(appLocalizations?.translate('title') ?? 'Add Reservation'),
+        title: Text('Add Reservation'),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: Icon(Icons.language),
-            onPressed: _toggleLanguage,
-          ),
-          IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: Icon(Icons.help_outline),
             onPressed: _showInstructionsDialog,
           ),
         ],
@@ -207,7 +190,7 @@ class _AddReservationPageState extends State<AddReservationPage> {
                 );
               }).toList(),
               decoration: InputDecoration(
-                labelText: appLocalizations?.translate('select_customer') ?? 'Select Customer',
+                labelText: 'Select Customer',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -226,13 +209,13 @@ class _AddReservationPageState extends State<AddReservationPage> {
                 );
               }).toList(),
               decoration: InputDecoration(
-                labelText: appLocalizations?.translate('select_flight') ?? 'Select Flight',
+                labelText: 'Select Flight',
                 border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 16),
             ListTile(
-              title: Text(appLocalizations?.translate('select_date') ?? 'Select Date:'),
+              title: Text('Select Date:'),
               subtitle: Text('${selectedDate.year}-${selectedDate.month}-${selectedDate.day}'),
               trailing: Icon(Icons.calendar_today),
               onTap: () async {
@@ -243,9 +226,7 @@ class _AddReservationPageState extends State<AddReservationPage> {
                   lastDate: DateTime.now().add(Duration(days: 365)),
                 );
                 if (picked != null && picked != selectedDate) {
-                  setState(() {
-                    selectedDate = picked;
-                  });
+                  handleDateChanged(picked);
                 }
               },
             ),
@@ -255,7 +236,7 @@ class _AddReservationPageState extends State<AddReservationPage> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.blue,
               ),
-              child: Text(appLocalizations?.translate('add_reservation') ?? 'Add Reservation'),
+              child: Text('Add Reservation'),
             ),
           ],
         ),

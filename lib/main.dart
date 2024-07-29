@@ -5,9 +5,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cst2335_group_project/ReservationsPage.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'AppLocalizations.dart';
-
 
 // References
 // https://www.freepik.com/free-photo/transport-fly-clouds-jet-flying_1103165.htm#fromView=search&page=1&position=8&uuid=cff44ecc-8674-43ac-ac5d-1e48bf541006
@@ -17,21 +14,8 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale('en', ''); // Default to English
-
-  void _setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,24 +26,13 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      locale: _locale,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', ''), // English
-        Locale('fr', ''), // French
-      ],
       initialRoute: '/',
       routes: {
-        '/': (context) => MyHomePage(title: "Turbulence Airlines Operations", setLocale: _setLocale),
+        '/': (context) => const MyHomePage(title: "Turbulence Airlines Operations"),
         // '/customer': ,
         //'/airplane': (context) => const AirplanePage(title: "Airplane Management"),
         // '/airplane/details: ,
-        // '/flight':
+        // '/flight': ,
         '/reservation': (context) => const ReservationsPage(),
       },
     );
@@ -67,7 +40,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title, required void Function(Locale locale) setLocale});
+  const MyHomePage({super.key, required this.title});
   final String title;
 
   @override
@@ -182,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Text("Scheduled Flight List",
                     style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: "Satoshi")),
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: "Satoshi")),
               ),
               InteractiveViewer(child: DataTable(
                 headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black54),
@@ -249,11 +222,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: size.width,
                 height: size.height,
                 decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    image: DecorationImage(
-                    fit: BoxFit.fill,
-                    colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                    image: const AssetImage("assets/images/plane-wing.png")),
+                  color: Colors.blueAccent,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                      image: const AssetImage("assets/images/plane-wing.png")),
                 ),
                 child: Row(
                   children: [
@@ -269,4 +242,3 @@ class _MyHomePageState extends State<MyHomePage> {
     }));
   }
 }
-

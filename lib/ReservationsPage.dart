@@ -268,7 +268,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
                                 MaterialPageRoute(
                                   builder: (context) => AddReservationPage(
                                     reservations: reservations,
-                                    nextId: _reservationIdCounter + 1, setLocale: (Locale locale) {  },
+                                    nextId: _reservationIdCounter + 1,
                                   ),
                                 ),
                               );
