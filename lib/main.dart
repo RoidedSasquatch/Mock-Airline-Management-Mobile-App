@@ -3,6 +3,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'airplane_page.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
+import 'package:cst2335_group_project/ReservationsPage.dart';
 
 // References
 // https://www.freepik.com/free-photo/transport-fly-clouds-jet-flying_1103165.htm#fromView=search&page=1&position=8&uuid=cff44ecc-8674-43ac-ac5d-1e48bf541006
@@ -38,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: "/",
+      initialRoute: '/',
       routes: {
         '/': (context) =>
             MyHomePage(title: AppLocalizations.of(context)!.title),
@@ -46,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/airplane': (context) =>
             AirplanePage(title: AppLocalizations.of(context)!.title),
         // '/flight': ,
-        // '/reservation: '
+        '/reservation': (context) => const ReservationsPage(),
       },
     );
   }
