@@ -1,0 +1,10 @@
+{
+  "FL_flight_operations": "Flight Operations",
+  "FL_origin": "Origin",
+  "FL_destination": "Destination",
+  "FL_departure": "Departure",
+  "FL_arrival": "Arrival",
+  "FL_add_flight": "Add Flight",
+  "FL_clear_fields": "Clear Fields",
+  "FL_flight_list": "Flight List"
+}
