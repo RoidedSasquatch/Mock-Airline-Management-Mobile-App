@@ -1,5 +1,6 @@
 import 'dart:ui';
 //import 'package:cst2335_group_project/airplane_page.dart';
+import 'package:cst2335_group_project/flight_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         // '/customer': ,
         //'/airplane': (context) => const AirplanePage(title: "Airplane Management"),
         // '/airplane/details: ,
-        // '/flight': ,
+        '/flight': (context) => const FlightPage(title: "Flight Management"),
         // '/reservation: '
       },
     );
