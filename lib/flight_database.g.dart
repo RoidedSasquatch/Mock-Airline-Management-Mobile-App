@@ -96,7 +96,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Flight` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `destination` TEXT NOT NULL, `origin` TEXT NOT NULL, `departure` TEXT NOT NULL, `arrival` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Flight` (`id` INTEGER NOT NULL, `origin` TEXT NOT NULL, `destination` TEXT NOT NULL, `departure` TEXT NOT NULL, `arrival` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -120,8 +120,8 @@ class _$FlightDao extends FlightDao {
             'Flight',
             (Flight item) => <String, Object?>{
                   'id': item.id,
-                  'destination': item.destination,
                   'origin': item.origin,
+                  'destination': item.destination,
                   'departure': item.departure,
                   'arrival': item.arrival
                 }),
@@ -131,8 +131,8 @@ class _$FlightDao extends FlightDao {
             ['id'],
             (Flight item) => <String, Object?>{
                   'id': item.id,
-                  'destination': item.destination,
                   'origin': item.origin,
+                  'destination': item.destination,
                   'departure': item.departure,
                   'arrival': item.arrival
                 }),
@@ -142,8 +142,8 @@ class _$FlightDao extends FlightDao {
             ['id'],
             (Flight item) => <String, Object?>{
                   'id': item.id,
-                  'destination': item.destination,
                   'origin': item.origin,
+                  'destination': item.destination,
                   'departure': item.departure,
                   'arrival': item.arrival
                 });
@@ -164,8 +164,9 @@ class _$FlightDao extends FlightDao {
   Future<List<Flight>> findAllFlights() async {
     return _queryAdapter.queryList('SELECT * FROM Flight',
         mapper: (Map<String, Object?> row) => Flight(
-            row['destination'] as String,
+            row['id'] as int,
             row['origin'] as String,
+            row['destination'] as String,
             row['departure'] as String,
             row['arrival'] as String));
   }
@@ -174,8 +175,9 @@ class _$FlightDao extends FlightDao {
   Future<Flight?> findFlightById(int id) async {
     return _queryAdapter.query('SELECT * FROM Flight WHERE id = ?1',
         mapper: (Map<String, Object?> row) => Flight(
-            row['destination'] as String,
+            row['id'] as int,
             row['origin'] as String,
+            row['destination'] as String,
             row['departure'] as String,
             row['arrival'] as String),
         arguments: [id]);
