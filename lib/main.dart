@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-//import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'AppLocalizations.dart';
 
-import 'flight_page.dart';
+import 'airplane_page.dart';
+import 'package:cst2335_group_project/ReservationsPage.dart';
 
 // References
 // https://www.freepik.com/free-photo/transport-fly-clouds-jet-flying_1103165.htm#fromView=search&page=1&position=8&uuid=cff44ecc-8674-43ac-ac5d-1e48bf541006
@@ -15,43 +15,38 @@ void main() {
   runApp(const MyApp());
 }
 
+/// Root widget for the application.
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  static void setLocale(BuildContext context, Locale locale) async {
-    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    state?.changeLanguage(locale);
-  }
-
+  ///Build method for App
+  ///[context]: The build context
   @override
   _MyAppState createState() {
     return _MyAppState();
   }
 }
 
-/// Root widget for the application.
 class _MyAppState extends State<MyApp> {
 
   var _locale = Locale("en","CA");
 
-
   void changeLanguage(Locale newLocale) {
     setState(() { _locale = newLocale; });
   }
-  ///Build method for App
-  ///[context]: The build context
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      supportedLocales: const [
-        Locale("en", "CA"), //English US (Default)
-        Locale("ja") //Japanese (Dan)
-      ],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale("en"), //English US (Default)
+        Locale("ja") //Japanese (Dan)
       ],
       locale: _locale,
       debugShowCheckedModeBanner: false,
@@ -60,16 +55,15 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: "/",
+      initialRoute: '/',
       routes: {
         '/': (context) =>
-            MyHomePage(title: AppLocalizations.of(context)?.translate("title")??"Title Not Found"),
+            MyHomePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
         // '/customer': ,
-        //'/airplane': (context) =>
-            //Page(title: AppLocalizations.of(context)?.translate("title")??"Airplane Title Not Found"),
-         '/flight': (context) =>
-        FlightPage(title: AppLocalizations.of(context)?.translate("title")??"Airplane Title Not Found"),
-        // '/reservation: '
+        '/airplane': (context) =>
+            AirplanePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
+        // '/flight': ,
+        '/reservation': (context) => const ReservationsPage(),
       },
     );
   }
@@ -97,9 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return AppLocalizations.of(context)?.translate(key)??"No Translation Available";
   }
 
-  List<Locale> locales = [Locale("en","CA"), Locale("ja")];
-  var currentLocIndex = 0;
-
   /// Widget for the control panel section.
   Widget controlPanel() {
     return Column(
@@ -122,11 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -138,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
                   Text(translate("customerManagement"),
                       style:
-                      const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                          const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ]))),
         ElevatedButton(
             onPressed: () {
@@ -146,11 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -162,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
                   Text(translate("airplaneManagement"),
                       style:
-                      const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                          const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ]))),
         ElevatedButton(
             onPressed: () {
@@ -170,11 +161,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -186,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
                   Text(translate("flightManagement"),
                       style:
-                      const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                          const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ]))),
         ElevatedButton(
             onPressed: () {
@@ -194,11 +185,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -210,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
                   Text(translate("reservationManagement"),
                       style:
-                      const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                          const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ]))),
       ],
     );
@@ -245,8 +236,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               InteractiveViewer(
                 child: DataTable(
-                  headingRowColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.black54),
+                  headingRowColor: WidgetStateColor.resolveWith(
+                      (states) => Colors.black54),
                   columns: [
                     DataColumn(
                       label: SizedBox(
@@ -300,7 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         colorFilter: ColorFilter.mode(
                             Colors.black.withOpacity(0.2), BlendMode.dstATop),
                         image:
-                        const AssetImage("assets/images/plane-wing.png"))),
+                            const AssetImage("assets/images/plane-wing.png"))),
                 child: Column(
                   children: [
                     Expanded(child: controlPanel()),

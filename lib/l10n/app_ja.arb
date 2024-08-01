@@ -1,5 +1,5 @@
 {
-  "language": "ja",
+  "@@locale": "ja",
   "title": "航空会社の管理",
   "turbulenceAirlinesOperations": "\n乱気流航空の運営",
   "customerManagement": "顧客管理",
