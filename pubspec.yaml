@@ -73,6 +73,7 @@ flutter:
     - assets/images/plane-wing.png
     - assets/translations/en.json
     - assets/translations/fr.json
+    - assets/translations/ja.json
 
 
 
