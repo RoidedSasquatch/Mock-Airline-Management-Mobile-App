@@ -1,3 +1,4 @@
+import 'package:cst2335_group_project/flight_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -62,7 +63,8 @@ class _MyAppState extends State<MyApp> {
         // '/customer': ,
         '/airplane': (context) =>
             AirplanePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
-        // '/flight': ,
+        '/flight': (context) =>
+            FlightPage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
         '/reservation': (context) => const ReservationsPage(),
       },
     );
