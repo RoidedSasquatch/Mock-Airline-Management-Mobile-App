@@ -33,8 +33,8 @@ class FlightDataRepository {
 
   static void saveFlightData() {
     storedData.setString("origin", origin);
-    storedData.setString("destination", origin);
-    storedData.setString("departure", origin);
-    storedData.setString("arrival", origin);
+    storedData.setString("destination", destination);
+    storedData.setString("departure", departure);
+    storedData.setString("arrival", arrival);
   }
 }

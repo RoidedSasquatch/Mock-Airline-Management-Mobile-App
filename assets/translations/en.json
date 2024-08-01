@@ -36,6 +36,7 @@
   "FL_origin": "Origin",
   "FL_destination": "Destination",
   "FL_departure": "Departure",
+  "FL_flight_id": "ID",
   "FL_arrival": "Arrival",
   "FL_add_flight": "Add Flight",
   "FL_clear_fields": "Clear Fields",
@@ -44,9 +45,19 @@
   "FL_update_flight": "Update Flight",
   "FL_remove_flight": "Remove Flight",
   "FL_back": "Back",
-  "FL_flight_id": "ID",
-  "FL_flight_origin": "Origin",
-  "FL_flight_destination": "Destination",
-  "FL_flight_departure": "Departure",
-  "FL_flight_arrival": "Arrival"
+  "FL_flight_error": "Error: Flight details cannot be empty.",
+  "FL_add_title": "Add a Flight",
+  "FL_update_title": "Update a Flight",
+  "FL_usage_title": "Usage Instructions: Flights",
+  "FL_usage_add": "- To add a flight to the list, click the \"+\" button. Fill out the forms with the required details and click \"Add Flight\". You can also save the details for later if you need to confirm anything before adding.",
+  "FL_usage_clear": "- Use the \"Clear Forms\" button to clear any inputs",
+  "FL_usage_update": "- To update a flight, click on the flight and make changes to the fields as needed. Once your changes have been made you can click \"Update Flight\" to update the details",
+  "FL_usage_delete": "- To delete a flight, click on the flight and click the \"Remove Flight\" button",
+  "FL_flight_added": "Flight Added Successfully",
+  "FL_ok": "OK",
+  "FL_save_title": "Save flight details",
+  "FL_save_details": "Save",
+  "language": "EN"
+
+
 }
