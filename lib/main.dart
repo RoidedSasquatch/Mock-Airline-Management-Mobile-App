@@ -1,6 +1,8 @@
+import 'package:cst2335_group_project/flight_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'AppLocalizations.dart';
 
 import 'airplane_page.dart';
 import 'package:cst2335_group_project/ReservationsPage.dart';
@@ -15,11 +17,25 @@ void main() {
 }
 
 /// Root widget for the application.
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   ///Build method for App
   ///[context]: The build context
+  @override
+  _MyAppState createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+
+  var _locale = Locale("en","CA");
+
+  void changeLanguage(Locale newLocale) {
+    setState(() { _locale = newLocale; });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,6 +49,7 @@ class MyApp extends StatelessWidget {
         Locale("en"), //English US (Default)
         Locale("ja") //Japanese (Dan)
       ],
+      locale: _locale,
       debugShowCheckedModeBanner: false,
       title: 'Airline Management',
       theme: ThemeData(
@@ -42,11 +59,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) =>
-            MyHomePage(title: AppLocalizations.of(context)!.title),
+            MyHomePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
         // '/customer': ,
         '/airplane': (context) =>
-            AirplanePage(title: AppLocalizations.of(context)!.title),
-        // '/flight': ,
+            AirplanePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
+        '/flight': (context) =>
+            FlightPage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
         '/reservation': (context) => const ReservationsPage(),
       },
     );
@@ -71,6 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
+  String translate(String key) {
+    return AppLocalizations.of(context)?.translate(key)??"No Translation Available";
+  }
+
   /// Widget for the control panel section.
   Widget controlPanel() {
     return Column(
@@ -78,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
           child: Text(
-            AppLocalizations.of(context)!.turbulenceAirlinesOperations,
+            translate("turbulenceAirlinesOperations"),
             textAlign: TextAlign.center,
             style: const TextStyle(
                 color: Colors.white,
@@ -93,11 +115,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -107,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.greenAccent,
                   ),
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                  Text(AppLocalizations.of(context)!.customerManagement,
+                  Text(translate("customerManagement"),
                       style:
                           const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ]))),
@@ -117,11 +139,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -131,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.greenAccent,
                   ),
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                  Text(AppLocalizations.of(context)!.airplaneManagement,
+                  Text(translate("airplaneManagement"),
                       style:
                           const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ]))),
@@ -141,11 +163,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -155,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.greenAccent,
                   ),
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                  Text(AppLocalizations.of(context)!.flightManagement,
+                  Text(translate("flightManagement"),
                       style:
                           const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ]))),
@@ -165,11 +187,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -179,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.greenAccent,
                   ),
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                  Text(AppLocalizations.of(context)!.reservationManagement,
+                  Text(translate("reservationManagement"),
                       style:
                           const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ]))),
@@ -207,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                child: Text(AppLocalizations.of(context)!.scheduledFlightList,
+                child: Text(translate("scheduledFlightList"),
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -216,27 +238,27 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               InteractiveViewer(
                 child: DataTable(
-                  headingRowColor: MaterialStateColor.resolveWith(
+                  headingRowColor: WidgetStateColor.resolveWith(
                       (states) => Colors.black54),
                   columns: [
                     DataColumn(
                       label: SizedBox(
                           width: colWidth,
-                          child: Text(AppLocalizations.of(context)!.departCity,
+                          child: Text(translate("departCity"),
                               style: TextStyle(
                                   color: Colors.white, fontSize: fontSize))),
                     ),
                     DataColumn(
                       label: SizedBox(
                           width: colWidth,
-                          child: Text(AppLocalizations.of(context)!.arriveCity,
+                          child: Text(translate("arriveCity"),
                               style: TextStyle(
                                   color: Colors.white, fontSize: fontSize))),
                     ),
                     DataColumn(
                       label: SizedBox(
                           width: colWidth,
-                          child: Text(AppLocalizations.of(context)!.departTime,
+                          child: Text(translate("departTime"),
                               style: TextStyle(
                                   color: Colors.white, fontSize: fontSize))),
                     )

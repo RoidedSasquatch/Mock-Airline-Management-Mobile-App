@@ -2,8 +2,8 @@ import 'package:cst2335_group_project/airplane_data_repository.dart';
 import 'package:cst2335_group_project/utils.dart';
 import 'package:cst2335_group_project/validation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'AppLocalizations.dart';
 import 'airplane.dart';
 import 'airplane_database.dart';
 
@@ -80,6 +80,10 @@ class _AirplanePageState extends State<AirplanePage> {
     super.dispose();
   }
 
+  String translate(String key) {
+    return AppLocalizations.of(context)?.translate(key)??"No Translation Available";
+  }
+
   /// Initializes the database and loads airplane data.
   void initDatabase() async {
     db = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
@@ -96,19 +100,19 @@ class _AirplanePageState extends State<AirplanePage> {
     setState(() {
       if (!validation.validateType(insertTypeCont.value.text)) {
         noValidationErrors = false;
-        createErrorSnackBar(AppLocalizations.of(context)!.errorAirplaneTypeEmpty);
+        createErrorSnackBar(translate("errorAirplaneTypeEmpty"));
       }
       if (!validation.validatePassengers(insertPassengerCont.value.text)) {
         noValidationErrors = false;
-        createErrorSnackBar(AppLocalizations.of(context)!.errorMaxPassengersEmpty);
+        createErrorSnackBar(translate("errorMaxPassengersEmpty"));
       }
       if (!validation.validateSpeed(insertSpeedCont.value.text)) {
         noValidationErrors = false;
-        createErrorSnackBar(AppLocalizations.of(context)!.errorMaxSpeedEmpty);
+        createErrorSnackBar(translate("errorMaxSpeedEmpty"));
       }
       if (!validation.validateRange(insertRangeCont.value.text)) {
         noValidationErrors = false;
-        createErrorSnackBar(AppLocalizations.of(context)!.errorMaxRangeEmpty);
+        createErrorSnackBar(translate("errorMaxRangeEmpty"));
       }
       if (noValidationErrors) {
         Airplane airplane = Airplane(
@@ -129,9 +133,9 @@ class _AirplanePageState extends State<AirplanePage> {
         insertRangeCont.text = "";
         SnackBar snackBar = SnackBar(
             showCloseIcon: true,
-            content: Text(AppLocalizations.of(context)!.saveDataPrompt),
+            content: Text(translate("saveDataPrompt")),
             action: SnackBarAction(
-                label: AppLocalizations.of(context)!.yes,
+                label: translate("yes"),
                 onPressed: () {
                   AirplaneDataRepository.saveData();
                   AirplaneDataRepository.loadData();
@@ -177,7 +181,7 @@ class _AirplanePageState extends State<AirplanePage> {
       airplaneDAO.delete(selectedAirplane.id);
       selectedRow = -1;
       rowSelected = false;
-      appBarTitle = AppLocalizations.of(context)!.airplaneOperations;
+      appBarTitle = translate("airplaneOperations");
       Navigator.pop(context);
     });
   }
@@ -196,7 +200,7 @@ class _AirplanePageState extends State<AirplanePage> {
   /// [textFieldScalar]: Scalar factor for text fields.
   /// [vertPadding]: Vertical padding between elements.
   Widget controlPanel(Size size, double textFieldScalar, double vertPadding) {
-    appBarTitle = AppLocalizations.of(context)!.airplaneOperations;
+    appBarTitle = translate("airplaneOperations");
     return Column(
       children: [
         Row(
@@ -205,7 +209,7 @@ class _AirplanePageState extends State<AirplanePage> {
               padding:
                   EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
               child: Text(
-                AppLocalizations.of(context)!.airplaneType,
+                translate("airplaneType"),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -229,7 +233,7 @@ class _AirplanePageState extends State<AirplanePage> {
               padding:
                   EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
               child: Text(
-                AppLocalizations.of(context)!.maxPassengers,
+                translate("maxPassengers"),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -253,7 +257,7 @@ class _AirplanePageState extends State<AirplanePage> {
               padding:
                   EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
               child: Text(
-                AppLocalizations.of(context)!.maxSpeed,
+                translate("maxSpeed"),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -277,7 +281,7 @@ class _AirplanePageState extends State<AirplanePage> {
               padding:
                   EdgeInsets.symmetric(horizontal: 25, vertical: vertPadding),
               child: Text(
-                AppLocalizations.of(context)!.maxRange,
+                translate("maxRange"),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -301,11 +305,11 @@ class _AirplanePageState extends State<AirplanePage> {
             onPressed: insertAirplane,
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 180,
                 height: 30,
@@ -315,7 +319,7 @@ class _AirplanePageState extends State<AirplanePage> {
                     color: Colors.greenAccent,
                   ),
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                  Text(AppLocalizations.of(context)!.addAirplane,
+                  Text(translate("addAirplane"),
                       style:
                           const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ])),
@@ -335,11 +339,11 @@ class _AirplanePageState extends State<AirplanePage> {
           },
           style: ButtonStyle(
               backgroundColor:
-                  MaterialStateColor.resolveWith((states) => Colors.black38),
+                  WidgetStateColor.resolveWith((states) => Colors.black38),
               foregroundColor:
-                  MaterialStateColor.resolveWith((states) => Colors.black38),
+                  WidgetStateColor.resolveWith((states) => Colors.black38),
               overlayColor:
-                  MaterialStateColor.resolveWith((states) => Colors.black12)),
+                  WidgetStateColor.resolveWith((states) => Colors.black12)),
           child: SizedBox(
               width: 180,
               height: 30,
@@ -349,7 +353,7 @@ class _AirplanePageState extends State<AirplanePage> {
                   color: Colors.greenAccent,
                 ),
                 const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                Text(AppLocalizations.of(context)!.clearFields,
+                Text(translate("clearFields"),
                     style:
                         const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
               ])),
@@ -373,7 +377,7 @@ class _AirplanePageState extends State<AirplanePage> {
           Padding(
             padding: const EdgeInsets.only(top: 5),
             child: Text(
-                AppLocalizations.of(context)!.airplaneInventory,
+                translate("airplaneInventory"),
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: Colors.white,
@@ -395,7 +399,7 @@ class _AirplanePageState extends State<AirplanePage> {
                           selectedRow = rowNum;
                           selectedAirplane = airplanes[rowNum];
                           rowSelected = true;
-                          appBarTitle = AppLocalizations.of(context)!.airplaneDetails;
+                          appBarTitle = translate("airplaneDetails");
                         });
                       },
                       child: DecoratedBox(
@@ -457,7 +461,7 @@ class _AirplanePageState extends State<AirplanePage> {
                   setState(() {
                     selectedRow = -1;
                     rowSelected = false;
-                    appBarTitle = AppLocalizations.of(context)!.airplaneOperations;
+                    appBarTitle = translate("airplaneOperations");
                   });
                 },
               ),
@@ -470,7 +474,7 @@ class _AirplanePageState extends State<AirplanePage> {
               padding: EdgeInsets.only(
                   left: 25, right: 25, top: 5, bottom: vertPadding * 1.5),
               child: Text(
-                AppLocalizations.of(context)!.airplaneType,
+                translate("airplaneType"),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -494,7 +498,7 @@ class _AirplanePageState extends State<AirplanePage> {
               padding: EdgeInsets.symmetric(
                   horizontal: 25, vertical: vertPadding * 1.5),
               child: Text(
-                AppLocalizations.of(context)!.maxPassengers,
+                translate("maxPassengers"),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -518,7 +522,7 @@ class _AirplanePageState extends State<AirplanePage> {
               padding: EdgeInsets.symmetric(
                   horizontal: 25, vertical: vertPadding * 1.5),
               child: Text(
-                AppLocalizations.of(context)!.maxSpeed,
+                translate("maxSpeed"),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -542,7 +546,7 @@ class _AirplanePageState extends State<AirplanePage> {
               padding: EdgeInsets.symmetric(
                   horizontal: 25, vertical: vertPadding * 1.5),
               child: Text(
-                AppLocalizations.of(context)!.maxRange,
+                translate("maxRange"),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white,
@@ -566,11 +570,11 @@ class _AirplanePageState extends State<AirplanePage> {
             onPressed: updateAirplane,
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 180,
                 height: 30,
@@ -580,7 +584,7 @@ class _AirplanePageState extends State<AirplanePage> {
                     color: Colors.greenAccent,
                   ),
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                  Text(AppLocalizations.of(context)!.updateAirplane,
+                  Text(translate("updateAirplane"),
                       style:
                           const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ])),
@@ -594,28 +598,28 @@ class _AirplanePageState extends State<AirplanePage> {
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                   actionsAlignment: MainAxisAlignment.center,
-                  title: Text(AppLocalizations.of(context)!.confirmDelete),
+                  title: Text(translate("confirmDelete")),
                   content:
-                      Text(AppLocalizations.of(context)!.deletePrompt),
+                      Text(translate("deletePrompt")),
                   actions: <Widget>[
                     ElevatedButton(
-                        onPressed: deleteAirplane, child: Text(AppLocalizations.of(context)!.yes)),
+                        onPressed: deleteAirplane, child: Text(translate("yes"))),
                     ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text(AppLocalizations.of(context)!.cancel)),
+                        child: Text(translate("cancel"))),
                   ],
                 ),
               );
             },
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black38),
+                    WidgetStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black12)),
+                    WidgetStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 180,
                 height: 30,
@@ -625,7 +629,7 @@ class _AirplanePageState extends State<AirplanePage> {
                     color: Colors.greenAccent,
                   ),
                   const Padding(padding: EdgeInsets.symmetric(horizontal: 7)),
-                  Text(AppLocalizations.of(context)!.deleteAirplane,
+                  Text(translate("deleteAirplane"),
                       style:
                           const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
                 ])),
@@ -702,15 +706,15 @@ class _AirplanePageState extends State<AirplanePage> {
                       builder: (BuildContext context) => AlertDialog(
                         scrollable: true,
                         actionsAlignment: MainAxisAlignment.center,
-                        title: Text(AppLocalizations.of(context)!.usageGuideTitle),
+                        title: Text(translate("usageGuideTitle")),
                         content: Text(
-                            AppLocalizations.of(context)!.usageGuideContent),
+                            translate("usageGuideContent")),
                         actions: <Widget>[
                           ElevatedButton(
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text(AppLocalizations.of(context)!.close)),
+                              child: Text(translate("close"))),
                         ],
                       ),
                     );

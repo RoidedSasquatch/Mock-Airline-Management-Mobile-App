@@ -32,5 +32,11 @@
   "errorMaxSpeedEmpty": "Error: Max. Speed cannot be empty, and must be numeric.",
   "errorMaxRangeEmpty": "Error: Max. Range cannot be empty, and must be numeric.",
   "usageGuideTitle": "Usage Guide",
-  "usageGuideContent": "Add airplanes to the database by entering values into the text fields. Click the add button to add an airplane. Once an airplane is added, it will appear in the airplane inventory list. Click on a list item to view details about it. When viewing details, values can be modified by simply modifying the values in the fields and clicking the update button. Items can also be deleted by clicking the delete button. Click the \"X\" button to leave the details screen. \n\nValidation:\nAirplane Type cannot be empty.\n\nMax. Passengers cannot be empty and must be an integer\n\nMax. Speed cannot be empty and must be numeric\n\nMax. Range cannot be empty and must be numeric."
+  "usageGuideContent": "Add airplanes to the database by entering values into the text fields. Click the add button to add an airplane. Once an airplane is added, it will appear in the airplane inventory list. Click on a list item to view details about it. When viewing details, values can be modified by simply modifying the values in the fields and clicking the update button. Items can also be deleted by clicking the delete button. Click the \"X\" button to leave the details screen. \n\nValidation:\nAirplane Type cannot be empty.\n\nMax. Passengers cannot be empty and must be an integer\n\nMax. Speed cannot be empty and must be numeric\n\nMax. Range cannot be empty and must be numeric.",
+  "RE_title": "Add Reservation",
+  "RE_add_reservation": "Add Reservation",
+  "RE_select_customer": "Select Customer",
+  "RE_select_flight": "Select Flight",
+  "RE_select_date": "Select Date"
 }
+
