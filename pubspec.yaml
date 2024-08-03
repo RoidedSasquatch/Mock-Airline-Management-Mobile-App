@@ -31,15 +31,22 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.0.6
-  flutter_secure_storage: ^5.0.2
   floor: ^1.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  dartdoc: ^8.0.8
+  encrypted_shared_preferences: ^3.0.1
+  flutter_secure_storage: ^4.2.1
 
+  sqflite: any
+  dartdoc: ^8.0.8
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 dev_dependencies:
+  floor_generator: ^1.4.0
+  build_runner: ^2.4.9
   flutter_test:
     sdk: flutter
   floor_generator: ^1.4.0
@@ -49,7 +56,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -60,11 +67,15 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
+  generate: true
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/plane-wing.png
+    - assets/translations/en.json
+    - assets/translations/fr.json
+    - assets/translations/ja.json
 
 
 
