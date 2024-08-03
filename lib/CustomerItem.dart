@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 @Entity(tableName: 'CustomerItem')
 class CustomerItem {
   @PrimaryKey(autoGenerate: true)
-  final int id;
+  final int? id;
 
   final String firstName;
   final String lastName;
@@ -14,11 +14,12 @@ class CustomerItem {
   static int _cusID = 1;
   static SharedPreferences? _prefs;
 
-  CustomerItem(this.id, this.firstName, this.lastName, this.passportNumber, this.budget) {
-    if (id >= _cusID) {
-      _cusID = id + 1;
-      saveCusID();
-    }
+  CustomerItem(this.id, this.firstName, this.lastName, this.passportNumber,
+      this.budget) {
+    // if (id >= _cusID) {
+    //   _cusID = id + 1;
+    //   saveCusID();
+    // }
   }
 
   static Future<void> initializeCusID() async {
@@ -34,6 +35,7 @@ class CustomerItem {
   }
 
   static int get cusID => _cusID;
+
   static set cusID(int value) {
     _cusID = value;
     saveCusID();

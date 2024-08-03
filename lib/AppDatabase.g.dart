@@ -124,6 +124,17 @@ class _$CustomerDAO extends CustomerDAO {
                   'lastName': item.lastName,
                   'passportNumber': item.passportNumber,
                   'budget': item.budget
+                }),
+        _customerItemUpdateAdapter = UpdateAdapter(
+            database,
+            'CustomerItem',
+            ['id'],
+            (CustomerItem item) => <String, Object?>{
+                  'id': item.id,
+                  'firstName': item.firstName,
+                  'lastName': item.lastName,
+                  'passportNumber': item.passportNumber,
+                  'budget': item.budget
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -133,6 +144,8 @@ class _$CustomerDAO extends CustomerDAO {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<CustomerItem> _customerItemInsertionAdapter;
+
+  final UpdateAdapter<CustomerItem> _customerItemUpdateAdapter;
 
   @override
   Future<List<CustomerItem>> findAllToDoItems() async {
@@ -156,5 +169,11 @@ class _$CustomerDAO extends CustomerDAO {
   Future<int> insertCustomerItem(CustomerItem customerItem) {
     return _customerItemInsertionAdapter.insertAndReturnId(
         customerItem, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<int> updateCustomerItem(CustomerItem customerItem) {
+    return _customerItemUpdateAdapter.updateAndReturnChangedRows(
+        customerItem, OnConflictStrategy.replace);
   }
 }

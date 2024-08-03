@@ -8,26 +8,19 @@ import 'AppDatabase.dart';
 class Customers extends StatefulWidget {
   @override
   State<Customers> createState() => _CustomersState();
-
 }
 
 class _CustomersState extends State<Customers> {
-  List<Map<String, String>> _customers = [];
-
-  Map<String, String>? _selectedCustomer;
+  CustomerItem? _selectedCustomer;
 
   List<CustomerItem> customers = [];
   late CustomerDAO customerDAO;
   Customers? selectedItem;
 
-
-
-
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _passportController = TextEditingController();
   final TextEditingController _budgetController = TextEditingController();
-  static int ID = 100;
 
   final _storage = FlutterSecureStorage();
 
@@ -39,21 +32,30 @@ class _CustomersState extends State<Customers> {
     _firstNameController.addListener(_saveLatestCustomer);
     _passportController.addListener(_saveLatestCustomer);
     _budgetController.addListener(_saveLatestCustomer);
-    intDataBase();
+
+    WidgetsBinding.instance.addPostFrameCallback((s) {
+      intDataBase();
+    });
   }
 
-  intDataBase () async {
-    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+  intDataBase() async {
+    final database =
+    await $FloorAppDatabase.databaseBuilder('app_database.db').build();
     customerDAO = database.CustomerDao;
+    loadData();
   }
 
   void loadData() async {
-    final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    customerDAO = database.CustomerDao as CustomerDAO;
+    // final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    // customerDAO = database.CustomerDao as CustomerDAO;
     var listToCopy = await customerDAO.findAllToDoItems();
-    setState(() {
-      customers.addAll(listToCopy);
-    });
+
+    print(await customerDAO.findAllToDoItems());
+    print(listToCopy);
+    customers.clear();
+    customers.addAll(listToCopy);
+
+    setState(() {});
   }
 
   @override
@@ -75,7 +77,10 @@ class _CustomersState extends State<Customers> {
     String? passport = await _storage.read(key: 'latestCustomerPassport');
     String? budget = await _storage.read(key: 'latestCustomerBudget');
 
-    if (name != null && firstName != null && passport != null && budget != null) {
+    if (name != null &&
+        firstName != null &&
+        passport != null &&
+        budget != null) {
       setState(() {
         _nameController.text = name;
         _firstNameController.text = firstName;
@@ -86,39 +91,71 @@ class _CustomersState extends State<Customers> {
   }
 
   Future<void> _saveLatestCustomer() async {
-    await _storage.write(key: 'latestCustomerName', value: _nameController.text);
-    await _storage.write(key: 'latestCustomerFirstName', value: _firstNameController.text);
-    await _storage.write(key: 'latestCustomerPassport', value: _passportController.text);
-    await _storage.write(key: 'latestCustomerBudget', value: _budgetController.text);
+    await _storage.write(
+        key: 'latestCustomerName', value: _nameController.text);
+    await _storage.write(
+        key: 'latestCustomerFirstName', value: _firstNameController.text);
+    await _storage.write(
+        key: 'latestCustomerPassport', value: _passportController.text);
+    await _storage.write(
+        key: 'latestCustomerBudget', value: _budgetController.text);
   }
 
-  void _addCustomer() {
+  Future<void> _updateCustomer() async {
     if (_nameController.text.isNotEmpty &&
         _firstNameController.text.isNotEmpty &&
         _passportController.text.isNotEmpty &&
         _budgetController.text.isNotEmpty) {
-      setState(() {
-        _customers.add({
-          'name': _nameController.text,
-          'firstName': _firstNameController.text,
-          'passport': _passportController.text,
-          'budget': _budgetController.text,
-        });
+      final customer = customers[_selectedEditIndex];
+      var updatedCustomer = CustomerItem(
+          customer.id,
+          _nameController.text,
+          _firstNameController.text,
+          int.parse(_budgetController.text),
+          int.parse(_budgetController.text));
+      var result = await customerDAO.updateCustomerItem(updatedCustomer);
+      print(result);
 
-        final customer = CustomerItem(ID++, _nameController.text, _firstNameController.text,
-            int.parse(_budgetController.text), int.parse(_budgetController.text) );
-        customerDAO.insertCustomerItem(customer);
-        customers.add(customer);
+      customers[_selectedEditIndex] = updatedCustomer;
 
+      _selectedEditIndex = null;
+      setState(() {});
 
-        _nameController.clear();
-        _firstNameController.clear();
-        _passportController.clear();
-        _budgetController.clear();
-      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Customer updated successfully!'),
+        ),
+      );
+    }
+  }
 
+  Future<void> _addCustomer() async {
+    if (_nameController.text.isNotEmpty &&
+        _firstNameController.text.isNotEmpty &&
+        _passportController.text.isNotEmpty &&
+        _budgetController.text.isNotEmpty) {
+      final customer = CustomerItem(
+          null,
+          _nameController.text,
+          _firstNameController.text,
+          int.parse(_passportController.text),
+          int.parse(_budgetController.text));
+      var result = await customerDAO.insertCustomerItem(customer);
+      print(result);
 
+      customers.add(CustomerItem(
+          result,
+          _nameController.text,
+          _firstNameController.text,
+          int.parse(_passportController.text),
+          int.parse(_budgetController.text)));
 
+      _nameController.clear();
+      _firstNameController.clear();
+      _passportController.clear();
+      _budgetController.clear();
+
+      setState(() {});
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -131,8 +168,9 @@ class _CustomersState extends State<Customers> {
   }
 
   void _showCustomerDetails(int index, bool isWideScreen) {
-    final customer = _customers[index];
+    final customer = customers[index];
     if (isWideScreen) {
+      print("ss");
       setState(() {
         _selectedCustomer = customer;
       });
@@ -145,10 +183,10 @@ class _CustomersState extends State<Customers> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text('Name: ${customer['name']}'),
-                  Text('First Name: ${customer['firstName']}'),
-                  Text('Passport: ${customer['passport']}'),
-                  Text('Budget: ${customer['budget']}'),
+                  Text('Name: ${customer.firstName}'),
+                  Text('First Name: ${customer.lastName}'),
+                  Text('Passport: ${customer.passportNumber}'),
+                  Text('Budget: ${customer.budget}'),
                 ],
               ),
             ),
@@ -158,6 +196,13 @@ class _CustomersState extends State<Customers> {
                 onPressed: () {
                   Navigator.of(context).pop();
                   _deleteCustomer(index);
+                },
+              ),
+              TextButton(
+                child: Text('Edit'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _editCustomer(index);
                 },
               ),
               TextButton(
@@ -173,19 +218,43 @@ class _CustomersState extends State<Customers> {
     }
   }
 
+  var _selectedEditIndex = null;
+
+  void _editCustomer(int index) {
+    _selectedEditIndex = index;
 
 
-  void _deleteCustomer(int index) {
-    setState(() {
-      _customers.removeAt(index);
+
+
+    prepoluateEditData();
+    setState(() {});
+  }
+
+  void prepoluateEditData() {
+    _nameController.text = customers[_selectedEditIndex].firstName;
+    _firstNameController.text = customers[_selectedEditIndex].lastName;
+    _passportController.text =
+    "${customers[_selectedEditIndex].passportNumber}";
+    _budgetController.text = "${customers[_selectedEditIndex].budget}";
+  }
+
+  Future<void> _deleteCustomer(int index) async {
+    print("Callign delete");
+    print(customers[index].id);
+
+    if (customers[index].id != -1) {
+      var it = await customerDAO.deleteToDoItem(customers[index].id ?? -1);
+      print(it);
+      customers.removeAt(index);
       _selectedCustomer = null;
-    });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Customer deleted successfully!'),
-      ),
-    );
+      setState(() {});
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Customer deleted successfully!'),
+        ),
+      );
+    }
   }
 
   void _showInstructions() {
@@ -200,8 +269,10 @@ class _CustomersState extends State<Customers> {
                 Text('1. Enter customer details in the text fields.'),
                 Text('2. Hit the "Add" button to add the customer.'),
                 Text('3. Long press on a customer entry for details.'),
-                Text('4. After a long press, you can delete the customer entry.'),
-                Text('5. You can navigate to other pages by pressing the shortcuts bellow the add button'),
+                Text(
+                    '4. After a long press, you can delete the customer entry.'),
+                Text(
+                    '5. You can navigate to other pages by pressing the shortcuts bellow the add button'),
               ],
             ),
           ),
@@ -232,19 +303,31 @@ class _CustomersState extends State<Customers> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Name: ${customer['name']}', style: TextStyle(fontSize: 16)),
-            Text('First Name: ${customer['firstName']}', style: TextStyle(fontSize: 16)),
-            Text('Passport: ${customer['passport']}', style: TextStyle(fontSize: 16)),
-            Text('Budget: ${customer['budget']}', style: TextStyle(fontSize: 16)),
+            Text('Name: ${customer.firstName}', style: TextStyle(fontSize: 16)),
+            Text('First Name: ${customer.lastName}',
+                style: TextStyle(fontSize: 16)),
+            Text('Passport: ${customer.passportNumber}',
+                style: TextStyle(fontSize: 16)),
+            Text('Budget: ${customer.budget}', style: TextStyle(fontSize: 16)),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                final index = _customers.indexOf(customer);
+                final index = customers.indexOf(customer);
                 _deleteCustomer(index);
               },
               child: Text('Delete'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final index = customers.indexOf(customer);
+                _editCustomer(index);
+              },
+              child: Text('Edit'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueGrey,
               ),
             ),
           ],
@@ -273,73 +356,96 @@ class _CustomersState extends State<Customers> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: <Widget>[
-                      TextField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          labelText: 'Enter customer name',
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        ),
+                  child: SingleChildScrollView(
+                    physics: isWideScreen
+                        ? AlwaysScrollableScrollPhysics()
+                        : NeverScrollableScrollPhysics(),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          TextField(
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              labelText: 'Enter customer name',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                              labelText: 'Enter customer first name',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _passportController,
+                            decoration: InputDecoration(
+                              labelText: 'Enter passport number',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          TextField(
+                            controller: _budgetController,
+                            decoration: InputDecoration(
+                              labelText: 'Enter budget',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: _selectedEditIndex == null
+                                ? _addCustomer
+                                : _updateCustomer,
+                            child: Text(
+                                _selectedEditIndex == null ? 'Add' : 'Edit'),
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 30.0),
+                              textStyle: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: customers.length,
+                              // physics: isWideScreen
+                              //     ? NeverScrollableScrollPhysics()
+                              //     : AlwaysScrollableScrollPhysics(),
+                              // shrinkWrap: isWideScreen ? true : false,
+                              itemBuilder: (context, index) {
+                                final customer = customers[index];
+                                return Card(
+                                  margin: EdgeInsets.symmetric(vertical: 5.0),
+                                  child: GestureDetector(
+                                    onLongPress: () => _showCustomerDetails(
+                                        index, isWideScreen),
+                                    child: ListTile(
+                                      title: Text(
+                                          '${customer.firstName} ${customer.lastName}'),
+                                      subtitle: Text(
+                                          'Passport: ${customer.passportNumber}, Budget: ${customer.budget}'),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _firstNameController,
-                        decoration: InputDecoration(
-                          labelText: 'Enter customer first name',
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _passportController,
-                        decoration: InputDecoration(
-                          labelText: 'Enter passport number',
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _budgetController,
-                        decoration: InputDecoration(
-                          labelText: 'Enter budget',
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _addCustomer,
-                        child: Text('Add'),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-                          textStyle: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: _customers.length,
-                          itemBuilder: (context, index) {
-                            final customer = _customers[index];
-                            return Card(
-                              margin: EdgeInsets.symmetric(vertical: 5.0),
-                              child: GestureDetector(
-                                onLongPress: () => _showCustomerDetails(index, isWideScreen),
-                                child: ListTile(
-                                  title: Text('${customer['name']} ${customer['firstName']}'),
-                                  subtitle: Text('Passport: ${customer['passport']}, Budget: ${customer['budget']}'),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),

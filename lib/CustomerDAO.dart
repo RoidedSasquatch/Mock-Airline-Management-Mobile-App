@@ -11,4 +11,7 @@ abstract class CustomerDAO {
 
   @insert
   Future<int> insertCustomerItem(CustomerItem customerItem);
+
+  @Update(onConflict: OnConflictStrategy.replace)
+  Future<int> updateCustomerItem(CustomerItem customerItem);
 }
