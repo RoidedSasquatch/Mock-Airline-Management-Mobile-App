@@ -1,9 +1,10 @@
+import 'dart:ui';
+import 'package:cst2335_group_project/customers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:cst2335_group_project/flight_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'AppLocalizations.dart';
-
 import 'airplane_page.dart';
 import 'package:cst2335_group_project/ReservationsPage.dart';
 
@@ -60,7 +61,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) =>
             MyHomePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
-        // '/customer': ,
+        '/customer': (context) => Customers(),
         '/airplane': (context) =>
             AirplanePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
         '/flight': (context) =>
@@ -77,7 +78,6 @@ class MyHomePage extends StatefulWidget {
 
   /// The title of the homepage.
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
