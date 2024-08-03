@@ -408,7 +408,7 @@ class _CustomersState extends State<Customers> {
                               labelText: 'Enter Customer Birthday',
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
+                                  vertical: 10, horizontal: 10.0),
                             ),
                           ),
                           SizedBox(height: 20),
