@@ -167,6 +167,13 @@ class _CustomersState extends State<Customers> {
     }
   }
 
+  void _clearFields() {
+    _nameController.clear();
+    _firstNameController.clear();
+    _passportController.clear();
+    _budgetController.clear();
+  }
+
   void _showCustomerDetails(int index, bool isWideScreen) {
     final customer = customers[index];
     if (isWideScreen) {
@@ -185,8 +192,8 @@ class _CustomersState extends State<Customers> {
                 children: <Widget>[
                   Text('Name: ${customer.firstName}'),
                   Text('First Name: ${customer.lastName}'),
-                  Text('Passport: ${customer.passportNumber}'),
-                  Text('Budget: ${customer.budget}'),
+                  Text('Address: ${customer.passportNumber}'),
+                  Text('Birthday: ${customer.budget}'),
                 ],
               ),
             ),
@@ -306,9 +313,9 @@ class _CustomersState extends State<Customers> {
             Text('Name: ${customer.firstName}', style: TextStyle(fontSize: 16)),
             Text('First Name: ${customer.lastName}',
                 style: TextStyle(fontSize: 16)),
-            Text('Passport: ${customer.passportNumber}',
+            Text('Address: ${customer.passportNumber}',
                 style: TextStyle(fontSize: 16)),
-            Text('Budget: ${customer.budget}', style: TextStyle(fontSize: 16)),
+            Text('Birthday: ${customer.budget}', style: TextStyle(fontSize: 16)),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -388,7 +395,7 @@ class _CustomersState extends State<Customers> {
                           TextField(
                             controller: _passportController,
                             decoration: InputDecoration(
-                              labelText: 'Enter passport number',
+                              labelText: 'Enter customer address',
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 10.0),
@@ -398,25 +405,41 @@ class _CustomersState extends State<Customers> {
                           TextField(
                             controller: _budgetController,
                             decoration: InputDecoration(
-                              labelText: 'Enter budget',
+                              labelText: 'Enter Customer Birthday',
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 10.0),
                             ),
                           ),
                           SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: _selectedEditIndex == null
-                                ? _addCustomer
-                                : _updateCustomer,
-                            child: Text(
-                                _selectedEditIndex == null ? 'Add' : 'Edit'),
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 30.0),
-                              textStyle: TextStyle(fontSize: 18),
-                            ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: _selectedEditIndex == null
+                                    ? _addCustomer
+                                    : _updateCustomer,
+                                child: Text(
+                                    _selectedEditIndex == null ? 'Add' : 'Edit'),
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 30.0),
+                                  textStyle: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                              SizedBox(width: 16), // Add some space between buttons
+                              ElevatedButton(
+                                onPressed: _clearFields,
+                                child: Text('Clear'),
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                                  textStyle: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                            ],
                           ),
+
                           SizedBox(height: 20),
                           Expanded(
                             child: ListView.builder(
@@ -436,7 +459,7 @@ class _CustomersState extends State<Customers> {
                                       title: Text(
                                           '${customer.firstName} ${customer.lastName}'),
                                       subtitle: Text(
-                                          'Passport: ${customer.passportNumber}, Budget: ${customer.budget}'),
+                                          'Address: ${customer.passportNumber}, Birthday: ${customer.budget}'),
                                     ),
                                   ),
                                 );

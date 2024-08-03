@@ -96,7 +96,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CustomerItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `passportNumber` INTEGER NOT NULL, `budget` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `CustomerItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `passportNumber` INTEGER NOT NULL, `budget` INTEGER NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -151,7 +151,7 @@ class _$CustomerDAO extends CustomerDAO {
   Future<List<CustomerItem>> findAllToDoItems() async {
     return _queryAdapter.queryList('SELECT * FROM CustomerItem',
         mapper: (Map<String, Object?> row) => CustomerItem(
-            row['id'] as int,
+            row['id'] as int?,
             row['firstName'] as String,
             row['lastName'] as String,
             row['passportNumber'] as int,
