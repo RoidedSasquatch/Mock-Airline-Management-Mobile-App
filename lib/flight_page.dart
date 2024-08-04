@@ -6,34 +6,57 @@ import 'package:cst2335_group_project/flight_database.dart';
 import 'package:cst2335_group_project/flight_utils.dart';
 import 'package:flutter/material.dart';
 
+///FlightPage is a StatefulWidget that manages flight operations.
 class FlightPage extends StatefulWidget {
   const FlightPage({super.key, required this.title});
 
+  ///The page title.
   final String title;
 
   @override
   State<FlightPage> createState() => FlightPageState();
 }
 
+///State information for the FlightPage.
 class FlightPageState extends State<FlightPage> {
+
+  ///A [List] holding a local copy of all available flights.
   List<Flight> flightList = [];
 
+  ///The Data Access Object for [Flight].
   late FlightDao flightDao;
 
+  ///The currently selected [Flight].
   Flight? selectedFlight;
 
+  ///The [TextEditingController] that manages the origin [TextField]
   late TextEditingController _originController;
+
+  ///The [TextEditingController] that manages the destination [TextField]
   late TextEditingController _destinationController;
+
+  ///The [TextEditingController] that manages the departure [TextField]
   late TextEditingController _departureController;
+
+  ///The [TextEditingController] that manages the arrival [TextField]
   late TextEditingController _arrivalController;
 
+  ///A [List] of all supported locales
   List<Locale> locales = [const Locale("en", "CA"), const Locale("ja")];
+
+  ///An [Integer]  storing the index of the currently in use [Locale]
   var currentLocIndex = 0;
 
-  late Widget currentView;
+  ///A [bool] that controls whether or not to show the add flight panel
   bool addingFlight = false;
+
+  ///A [bool] that controls whether or not to show the update flight panel
   bool updatingFlight = false;
 
+  /// Translates a key to the current locale's string.
+  ///
+  /// @param key The key value for the text at a specific location.
+  /// @returns String The corresponding translation for the current language
   String translate(String key) {
     return AppLocalizations.of(context)?.translate(key) ??
         "No Translation Available";
@@ -46,13 +69,15 @@ class FlightPageState extends State<FlightPage> {
     loadFlights();
   }
 
+  /// Loads flight data from the database and initializes the FlightDao.
   void loadFlights() async {
     final database =
-        await $FloorAppDatabase.databaseBuilder("flightT2_db").build();
+    await $FloorAppDatabase.databaseBuilder("flightT2_db").build();
     flightDao = database.flightDao;
     updateFlights();
   }
 
+  /// Initializes the text controllers with existing flight data.
   void loadTextControllers() {
     FlightDataRepository.loadFlightData();
 
@@ -67,6 +92,7 @@ class FlightPageState extends State<FlightPage> {
     _arrivalController.text = FlightDataRepository.arrival;
   }
 
+  /// Updates the flight list from the database.
   void updateFlights() async {
     final result = await flightDao.findAllFlights();
     setState(() {
@@ -80,6 +106,10 @@ class FlightPageState extends State<FlightPage> {
     super.dispose();
   }
 
+  ///Verifies that user input has been provided and shows a snack bar if it has not.
+  ///
+  /// @param input A [String] of user input.
+  /// @returns bool Whether or not the input is empty.
   bool validateInput(String input) {
     if (input.isNotEmpty) {
       return true;
@@ -95,6 +125,12 @@ class FlightPageState extends State<FlightPage> {
     return false;
   }
 
+  ///Adds a new [Flight] to the database.
+  ///
+  /// @param origin The origin of the flight.
+  /// @param destination The destination of the flight.
+  /// @param departure The departure time of the flight.
+  /// @param arrival The arrival time of the flight.
   void addFlight(
       String origin, String destination, String departure, String arrival) {
     Flight newFlight =
@@ -103,20 +139,39 @@ class FlightPageState extends State<FlightPage> {
     updateFlights();
   }
 
+  ///Updates the details of an existing [Flight] in the database.
+  ///
+  /// @param updatedFlight A [Flight] with the updated details.
   void updateFlightDetails(Flight updatedFlight) async {
     await flightDao.updateFlight(updatedFlight);
     updateFlights();
   }
 
+  ///Removes a [Flight] from the database.
+  ///
+  /// @param delFlight The [Flight] to be removed from the database.
   void removeFlight(Flight delFlight) async {
     await flightDao.deleteFlight(delFlight);
     updateFlights();
   }
 
+  ///Wraps a [Widget] in a [SizedBox] with [height] and [width] parameters.
+  ///
+  /// @param original The original [Widget] to be wrapped.
+  /// @param height The height of the box.
+  /// @param width The width of the box.
+  /// @returns Widget A [SizedBox] with the provided child and dimensions.
   Widget wrapInBox(Widget original, double height, double width) {
     return SizedBox(height: height, width: width, child: original);
   }
 
+  ///Returns a [SizedBox] containing a text labelled [TextField]
+  ///
+  /// Takes a [TextEditingController] and a [String] as a label to create a
+  /// formatted [SizedBox] with [Text] and a [TextField].
+  /// @param controller The [TextEditingController] corresponding to the [TextField].
+  /// @param label The [String] label that corresponds to the [TextField].
+  /// @returns Widget A [SizedBox] containing a formatted [TextField].
   Widget labelledTextField(TextEditingController controller, String label,
       double height, double width) {
     return SizedBox(
@@ -144,6 +199,11 @@ class FlightPageState extends State<FlightPage> {
         ));
   }
 
+  ///Returns a padded [Widget] with four [TextField]s used to add and update fights.
+  ///
+  /// @param height The height available for use.
+  /// @param width The width available for use.
+  /// @returns Widget A [Padding] widget containing the flight details [TextField]s.
   Widget flightDetails(double height, double width) {
     return Padding(
         padding: const EdgeInsets.all(10),
@@ -161,6 +221,9 @@ class FlightPageState extends State<FlightPage> {
         ));
   } //End of method flightDetails
 
+  /// Creates a formatted widget with the buttons to add a flight.
+  ///
+  /// @returns Widget a [Widget] with the [ElevatedButton]s used in the add flight page.
   Widget addFlightButtons() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       ElevatedButton(
@@ -225,6 +288,9 @@ class FlightPageState extends State<FlightPage> {
     ]);
   }
 
+  ///Creates a formatted [Widget] with the buttons to update or remove a flight.
+  ///
+  ///@returns Widget a [Widget] with the [ElevatedButton]s used in the selected flight page.
   Widget selectedFlightButtons() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       ElevatedButton(
@@ -284,6 +350,13 @@ class FlightPageState extends State<FlightPage> {
     ]);
   }
 
+  ///Returns a [Widget] with the [ListView] of the flights in the database.
+  ///
+  /// Formats and displays [Flight] details as a list. Provides access to
+  /// adding and updating flights.
+  /// @param height The height available for use.
+  /// @param width The width available for use.
+  /// @returns Widget A [Column] containing the [Flight] list.
   Widget flightListView(double height, double width) {
     return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
       wrapInBox(
@@ -381,6 +454,10 @@ class FlightPageState extends State<FlightPage> {
     ]);
   }
 
+  ///An [AlertDialog] that prompts the user to save tentative flight details for later.
+  ///
+  /// Allows a user to begin inputting flight details and save that information
+  /// for later if they need to confirm details before adding a flight.
   void saveFlightDetails() {
     showDialog<String>(
         context: context,
@@ -413,6 +490,11 @@ class FlightPageState extends State<FlightPage> {
                 ]));
   }
 
+  ///Returns a [Widget] containing the formatting for the page to add a [Flight].
+  ///
+  /// @param height The height available for use.
+  /// @param width The width available for use.
+  /// @returns Widget a widget containing the view to add a flight.
   Widget addFlightView(double height, double width) {
     return Column(
       children: [
@@ -443,6 +525,11 @@ class FlightPageState extends State<FlightPage> {
     );
   }
 
+  ///Returns a [Widget] containing the formatting for the page to update a [Flight].
+  ///
+  /// @param height The height available for use.
+  /// @param width The width available for use.
+  /// @returns Widget A [Column] containing the the formatting for the page to update a [Flight]
   Widget updateFlightView(double height, double width) {
     return Column(
       children: [
@@ -483,6 +570,13 @@ class FlightPageState extends State<FlightPage> {
     );
   }
 
+  ///Returns a [Widget] containing the formatting details for portrait view.
+  ///
+  /// Calls methods returning [Widget]s containing page details with specific
+  /// orientations and parameters for display on a phone.
+  /// @param height The height available for use.
+  /// @param width The width available for use.
+  /// @returns Widget a [Column] containing the phone view of the page.
   Widget phoneView(double height, double width) {
     Widget finalView = const Column();
     if (updatingFlight) {
@@ -504,6 +598,13 @@ class FlightPageState extends State<FlightPage> {
     return finalView;
   }
 
+  ///Returns a [Widget] containing the formatting details for landscape view.
+  ///
+  /// Calls methods returning [Widget]s containing page details with specific
+  /// orientations and parameters for display on a tablet.
+  /// @param height The height available for use.
+  /// @param width The width available for use.
+  /// @returns Widget a [Column] containing the tablet view of the page.
   Widget tabletView(double height, double width) {
     Widget finalView = const Column();
     if (updatingFlight) {
@@ -530,6 +631,10 @@ class FlightPageState extends State<FlightPage> {
     return finalView;
   }
 
+  ///Returns a [Widget] containing the formatting details for the current view.
+  ///
+  /// Uses screen size details to determine which page formatting to use.
+  /// @returns Widget A [Widget] containing the page contents formatted to the correct screen size.
   Widget selectFinalView() {
     var size = MediaQuery.of(context).size;
     var height = size.height;

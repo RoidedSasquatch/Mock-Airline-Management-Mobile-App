@@ -19,6 +19,14 @@ void main() {
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  /// Changes the locale of the app.
+  /// [context]: The build context
+  /// [locale]: The new locale.
+  static void setLocale(BuildContext context, Locale locale) async {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.changeLanguage(locale);
+  }
+
   ///Build method for App
   ///[context]: The build context
   @override
@@ -82,6 +90,10 @@ class MyHomePage extends StatefulWidget {
 
 /// State class for [MyHomePage].
 class _MyHomePageState extends State<MyHomePage> {
+
+  List<Locale> locales = [Locale("en","CA"), Locale("ja")];
+  var currentLocIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -103,10 +115,34 @@ class _MyHomePageState extends State<MyHomePage> {
             style: const TextStyle(
                 color: Colors.white,
                 fontFamily: "Satoshi",
-                fontSize: 35,
+                fontSize: 25,
                 fontWeight: FontWeight.bold),
           ),
         ),
+        ElevatedButton(
+            onPressed: () {
+              MyApp.setLocale(context, locales[++currentLocIndex%2]);
+            },
+            style: ButtonStyle(
+                backgroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: SizedBox(
+                width: 250,
+                height: 30,
+                child: Row(children: [
+                  const Icon(
+                    Icons.language,
+                    color: Colors.greenAccent,
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  Text(translate("next_language"),
+                      style:
+                      const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ]))),
         ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, '/customer');
@@ -298,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: flightList(
-                            size.width - 100, size.height / 2, 45, 8))
+                            size.width - 100, size.height / 2 - 30, 45, 8))
                   ],
                 ),
               ),
