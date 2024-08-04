@@ -305,11 +305,11 @@ class _AirplanePageState extends State<AirplanePage> {
             onPressed: insertAirplane,
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 180,
                 height: 30,
@@ -339,11 +339,11 @@ class _AirplanePageState extends State<AirplanePage> {
           },
           style: ButtonStyle(
               backgroundColor:
-                  WidgetStateColor.resolveWith((states) => Colors.black38),
+                  MaterialStateColor.resolveWith((states) => Colors.black38),
               foregroundColor:
-                  WidgetStateColor.resolveWith((states) => Colors.black38),
+                  MaterialStateColor.resolveWith((states) => Colors.black38),
               overlayColor:
-                  WidgetStateColor.resolveWith((states) => Colors.black12)),
+                  MaterialStateColor.resolveWith((states) => Colors.black12)),
           child: SizedBox(
               width: 180,
               height: 30,
@@ -570,11 +570,11 @@ class _AirplanePageState extends State<AirplanePage> {
             onPressed: updateAirplane,
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 180,
                 height: 30,
@@ -615,11 +615,11 @@ class _AirplanePageState extends State<AirplanePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 180,
                 height: 30,

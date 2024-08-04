@@ -6,10 +6,10 @@ class ReservationDetailsPage extends StatelessWidget {
   final void Function(Reservation) onDelete;
 
   const ReservationDetailsPage({
-    Key? key,
+    super.key,
     required this.reservation,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   Future<void> _showDeleteConfirmationDialog(BuildContext context) async {
     final result = await showDialog<bool>(
@@ -47,7 +47,7 @@ class ReservationDetailsPage extends StatelessWidget {
         automaticallyImplyLeading: !isLandscape, // Remove back button in landscape mode
         actions: [
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () => _showDeleteConfirmationDialog(context),
           ),
         ],
@@ -57,17 +57,17 @@ class ReservationDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Customer: ${reservation.customer.name}', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 10),
-            Text('Flight: ${reservation.flight.flightNumber}', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 10),
-            Text('Departure City: ${reservation.flight.departCity}', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 10),
-            Text('Destination City: ${reservation.flight.arriveCity}', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 10),
-            Text('Departure Time: ${reservation.flight.departTime}', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 10),
-            Text('Arrival Time: ${reservation.flight.arriveTime}', style: TextStyle(fontSize: 20)),
+            Text('Customer: ${reservation.customer.name}', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            Text('Flight: ${reservation.flight.flightNumber}', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            Text('Departure City: ${reservation.flight.departCity}', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            Text('Destination City: ${reservation.flight.arriveCity}', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            Text('Departure Time: ${reservation.flight.departTime}', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            Text('Arrival Time: ${reservation.flight.arriveTime}', style: const TextStyle(fontSize: 20)),
           ],
         ),
       ),

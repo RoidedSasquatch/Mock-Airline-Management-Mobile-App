@@ -4,7 +4,6 @@ import 'package:cst2335_group_project/flight_dao.dart';
 import 'package:cst2335_group_project/flight_data_repository.dart';
 import 'package:cst2335_group_project/flight_database.dart';
 import 'package:cst2335_group_project/flight_utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FlightPage extends StatefulWidget {
@@ -28,7 +27,7 @@ class FlightPageState extends State<FlightPage> {
   late TextEditingController _departureController;
   late TextEditingController _arrivalController;
 
-  List<Locale> locales = [Locale("en", "CA"), Locale("ja")];
+  List<Locale> locales = [const Locale("en", "CA"), const Locale("ja")];
   var currentLocIndex = 0;
 
   late Widget currentView;
@@ -82,7 +81,7 @@ class FlightPageState extends State<FlightPage> {
   }
 
   bool validateInput(String input) {
-    if (input.length > 0) {
+    if (input.isNotEmpty) {
       return true;
     }
     SnackBar snackBar = SnackBar(
@@ -147,7 +146,7 @@ class FlightPageState extends State<FlightPage> {
 
   Widget flightDetails(double height, double width) {
     return Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             labelledTextField(
@@ -167,11 +166,11 @@ class FlightPageState extends State<FlightPage> {
       ElevatedButton(
           style: ButtonStyle(
               backgroundColor:
-              WidgetStateColor.resolveWith((states) => Colors.black38),
+              MaterialStateColor.resolveWith((states) => Colors.black38),
               foregroundColor:
-              WidgetStateColor.resolveWith((states) => Colors.black38),
+              MaterialStateColor.resolveWith((states) => Colors.black38),
               overlayColor:
-              WidgetStateColor.resolveWith((states) => Colors.black12)),
+              MaterialStateColor.resolveWith((states) => Colors.black12)),
           onPressed: () {
             SnackBar snackBar = SnackBar(
                 content: Text(translate("FL_flight_added")),
@@ -202,11 +201,11 @@ class FlightPageState extends State<FlightPage> {
       ElevatedButton(
           style: ButtonStyle(
               backgroundColor:
-              WidgetStateColor.resolveWith((states) => Colors.black38),
+              MaterialStateColor.resolveWith((states) => Colors.black38),
               foregroundColor:
-              WidgetStateColor.resolveWith((states) => Colors.black38),
+              MaterialStateColor.resolveWith((states) => Colors.black38),
               overlayColor:
-              WidgetStateColor.resolveWith((states) => Colors.black12)),
+              MaterialStateColor.resolveWith((states) => Colors.black12)),
           onPressed: () {
             _originController.text = "";
             _destinationController.text = "";
@@ -231,11 +230,11 @@ class FlightPageState extends State<FlightPage> {
       ElevatedButton(
           style: ButtonStyle(
               backgroundColor:
-              WidgetStateColor.resolveWith((states) => Colors.black38),
+              MaterialStateColor.resolveWith((states) => Colors.black38),
               foregroundColor:
-              WidgetStateColor.resolveWith((states) => Colors.black38),
+              MaterialStateColor.resolveWith((states) => Colors.black38),
               overlayColor:
-              WidgetStateColor.resolveWith((states) => Colors.black12)),
+              MaterialStateColor.resolveWith((states) => Colors.black12)),
           onPressed: () {
             if (validateInput(_originController.text) &&
                 validateInput(_destinationController.text) &&
@@ -264,11 +263,11 @@ class FlightPageState extends State<FlightPage> {
       ElevatedButton(
           style: ButtonStyle(
               backgroundColor:
-              WidgetStateColor.resolveWith((states) => Colors.black38),
+              MaterialStateColor.resolveWith((states) => Colors.black38),
               foregroundColor:
-              WidgetStateColor.resolveWith((states) => Colors.black38),
+              MaterialStateColor.resolveWith((states) => Colors.black38),
               overlayColor:
-              WidgetStateColor.resolveWith((states) => Colors.black12)),
+              MaterialStateColor.resolveWith((states) => Colors.black12)),
           onPressed: () {
             removeFlight(selectedFlight!);
           },
@@ -293,18 +292,18 @@ class FlightPageState extends State<FlightPage> {
             ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                     foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                     overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
                 onPressed: () {
                   setState(() {
                     addingFlight = true;
                     updatingFlight = false;
                   });
                 },
-                child: Icon(Icons.add, color: Colors.greenAccent))
+                child: const Icon(Icons.add, color: Colors.greenAccent))
           ]),
           height / 10,
           width),
@@ -422,11 +421,11 @@ class FlightPageState extends State<FlightPage> {
               ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      WidgetStateColor.resolveWith((states) => Colors.black38),
+                      MaterialStateColor.resolveWith((states) => Colors.black38),
                       foregroundColor:
-                      WidgetStateColor.resolveWith((states) => Colors.black38),
+                      MaterialStateColor.resolveWith((states) => Colors.black38),
                       overlayColor:
-                      WidgetStateColor.resolveWith((states) => Colors.black12)),
+                      MaterialStateColor.resolveWith((states) => Colors.black12)),
                   onPressed: () {
                     saveFlightDetails();
                   },
@@ -452,11 +451,11 @@ class FlightPageState extends State<FlightPage> {
               ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      WidgetStateColor.resolveWith((states) => Colors.black38),
+                      MaterialStateColor.resolveWith((states) => Colors.black38),
                       foregroundColor:
-                      WidgetStateColor.resolveWith((states) => Colors.black38),
+                      MaterialStateColor.resolveWith((states) => Colors.black38),
                       overlayColor:
-                      WidgetStateColor.resolveWith((states) => Colors.black12)),
+                      MaterialStateColor.resolveWith((states) => Colors.black12)),
                   onPressed: () {
                     setState(() {
                       _originController.text = "";
@@ -485,7 +484,7 @@ class FlightPageState extends State<FlightPage> {
   }
 
   Widget phoneView(double height, double width) {
-    Widget finalView = Column();
+    Widget finalView = const Column();
     if (updatingFlight) {
       finalView = SizedBox(
           width: width - 20,
@@ -501,13 +500,12 @@ class FlightPageState extends State<FlightPage> {
           width: width - 20,
           height: height - 20,
           child: flightListView(height - 50, width - 50));
-      ;
     }
     return finalView;
   }
 
   Widget tabletView(double height, double width) {
-    Widget finalView = Column();
+    Widget finalView = const Column();
     if (updatingFlight) {
       finalView = Row(children: [
         SizedBox(

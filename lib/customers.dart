@@ -40,7 +40,7 @@ class _CustomersState extends State<Customers> {
 
   intDataBase() async {
     final database =
-    await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+    await $FloorAppDatabase.databaseBuilder('cust_db.db').build();
     customerDAO = database.CustomerDao;
     loadData();
   }
@@ -50,8 +50,6 @@ class _CustomersState extends State<Customers> {
     // customerDAO = database.CustomerDao as CustomerDAO;
     var listToCopy = await customerDAO.findAllToDoItems();
 
-    print(await customerDAO.findAllToDoItems());
-    print(listToCopy);
     customers.clear();
     customers.addAll(listToCopy);
 

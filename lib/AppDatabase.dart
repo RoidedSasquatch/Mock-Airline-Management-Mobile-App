@@ -1,5 +1,3 @@
-// database.dart
-
 // required package imports
 import 'dart:async';
 import 'package:cst2335_group_project/CustomerDAO.dart';

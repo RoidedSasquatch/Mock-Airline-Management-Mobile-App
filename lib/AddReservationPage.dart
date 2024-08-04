@@ -7,7 +7,7 @@ class AddReservationPage extends StatefulWidget {
   final List<Reservation> reservations;
   final int nextId;
 
-  const AddReservationPage({Key? key, required this.reservations, required this.nextId}) : super(key: key);
+  const AddReservationPage({super.key, required this.reservations, required this.nextId});
 
   @override
   _AddReservationPageState createState() => _AddReservationPageState();
@@ -127,7 +127,7 @@ class _AddReservationPageState extends State<AddReservationPage> {
       _showSaveDialog(newReservation);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select both a customer and a flight')),
+        const SnackBar(content: Text('Please select both a customer and a flight')),
       );
     }
   }
@@ -161,12 +161,12 @@ class _AddReservationPageState extends State<AddReservationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Reservation'),
+        title: const Text('Add Reservation'),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: Icon(Icons.help_outline),
+            icon: const Icon(Icons.help_outline),
             onPressed: _showInstructionsDialog,
           ),
         ],
@@ -189,12 +189,12 @@ class _AddReservationPageState extends State<AddReservationPage> {
                   child: Text(customer.name),
                 );
               }).toList(),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Select Customer',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             DropdownButtonFormField<Flight>(
               value: selectedFlight,
               onChanged: (Flight? value) {
@@ -208,35 +208,35 @@ class _AddReservationPageState extends State<AddReservationPage> {
                   child: Text('${flight.flightNumber} - ${flight.departCity} to ${flight.arriveCity} (${flight.departTime})'),
                 );
               }).toList(),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Select Flight',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ListTile(
-              title: Text('Select Date:'),
+              title: const Text('Select Date:'),
               subtitle: Text('${selectedDate.year}-${selectedDate.month}-${selectedDate.day}'),
-              trailing: Icon(Icons.calendar_today),
+              trailing: const Icon(Icons.calendar_today),
               onTap: () async {
                 final DateTime? picked = await showDatePicker(
                   context: context,
                   initialDate: selectedDate,
                   firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(Duration(days: 365)),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
                 );
                 if (picked != null && picked != selectedDate) {
                   handleDateChanged(picked);
                 }
               },
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: addReservation,
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.blue,
               ),
-              child: Text('Add Reservation'),
+              child: const Text('Add Reservation'),
             ),
           ],
         ),

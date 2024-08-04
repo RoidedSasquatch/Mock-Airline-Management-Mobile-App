@@ -1,6 +1,4 @@
-import 'dart:ui';
 import 'package:cst2335_group_project/customers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:cst2335_group_project/flight_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -31,7 +29,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  var _locale = Locale("en","CA");
+  var _locale = const Locale("en","CA");
 
   void changeLanguage(Locale newLocale) {
     setState(() { _locale = newLocale; });
@@ -115,11 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -139,11 +137,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -163,11 +161,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -187,11 +185,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -238,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               InteractiveViewer(
                 child: DataTable(
-                  headingRowColor: WidgetStateColor.resolveWith(
+                  headingRowColor: MaterialStateColor.resolveWith(
                       (states) => Colors.black54),
                   columns: [
                     DataColumn(

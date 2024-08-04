@@ -96,7 +96,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CustomerItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `passportNumber` INTEGER NOT NULL, `budget` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `CustomerItem` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `passportNumber` TEXT NOT NULL, `budget` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },

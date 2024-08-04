@@ -7,7 +7,7 @@ import 'Reservation.dart';
 import 'ReservationDetailsPage.dart';
 
 class ReservationsPage extends StatefulWidget {
-  const ReservationsPage({Key? key}) : super(key: key);
+  const ReservationsPage({super.key});
 
   @override
   _ReservationsPageState createState() => _ReservationsPageState();
@@ -64,7 +64,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
       context: context,
       initialDate: selectedDate,
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 365)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
 
     if (picked != null && picked != selectedDate) {
@@ -107,7 +107,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
       _showSaveDialog(newReservation);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill all fields')),
+        const SnackBar(content: Text('Please fill all fields')),
       );
     }
   }
@@ -218,10 +218,10 @@ class _ReservationsPageState extends State<ReservationsPage> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: Icon(Icons.help_outline),
+            icon: const Icon(Icons.help_outline),
             onPressed: _showInstructionsDialog,
           ),
         ],
@@ -247,7 +247,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
                       _buildTextField(departTimeController, 'Departure Time'),
                       _buildTextField(arriveTimeController, 'Arrival Time'),
                       _buildDateField(dateController, _selectDate),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
                       // Buttons in a row
                       Row(
@@ -255,11 +255,11 @@ class _ReservationsPageState extends State<ReservationsPage> {
                         children: [
                           ElevatedButton(
                             onPressed: addReservationFromInput,
-                            child: Text('Add Reservation'),
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white, backgroundColor: Colors.blue,
-                              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                             ),
+                            child: const Text('Add Reservation'),
                           ),
                           ElevatedButton(
                             onPressed: () async {
@@ -280,15 +280,15 @@ class _ReservationsPageState extends State<ReservationsPage> {
                                 });
                               }
                             },
-                            child: Text('Add Reservation via Form'),
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white, backgroundColor: Colors.green,
-                              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                             ),
+                            child: const Text('Add Reservation via Form'),
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
 
                       // Reservations list
                       Expanded(
@@ -296,13 +296,13 @@ class _ReservationsPageState extends State<ReservationsPage> {
                           itemCount: reservations.length,
                           itemBuilder: (context, index) {
                             return Card(
-                              margin: EdgeInsets.symmetric(vertical: 8),
+                              margin: const EdgeInsets.symmetric(vertical: 8),
                               child: ListTile(
-                                contentPadding: EdgeInsets.all(12),
-                                leading: Icon(Icons.flight_takeoff, color: Colors.blue),
+                                contentPadding: const EdgeInsets.all(12),
+                                leading: const Icon(Icons.flight_takeoff, color: Colors.blue),
                                 title: Text(
                                   'ID: ${reservations[index].id} - ${reservations[index].customer.name} - ${reservations[index].flight.flightNumber}',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text('Date: ${reservations[index].date.year}-${reservations[index].date.month}-${reservations[index].date.day}'),
                                 onTap: () {
@@ -351,7 +351,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelText: label,
         ),
       ),
@@ -363,7 +363,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
         controller: controller,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'Date',
         ),
