@@ -1,11 +1,10 @@
+//import 'package:cst2335_group_project/customers.dart';
 import 'package:cst2335_group_project/flight_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'AppLocalizations.dart';
-
-import 'airplane_page.dart';
-import 'package:cst2335_group_project/ReservationsPage.dart';
+//import 'airplane_page.dart';
+//import 'package:cst2335_group_project/ReservationsPage.dart';
 
 // References
 // https://www.freepik.com/free-photo/transport-fly-clouds-jet-flying_1103165.htm#fromView=search&page=1&position=8&uuid=cff44ecc-8674-43ac-ac5d-1e48bf541006
@@ -20,6 +19,14 @@ void main() {
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  /// Changes the locale of the app.
+  /// [context]: The build context
+  /// [locale]: The new locale.
+  static void setLocale(BuildContext context, Locale locale) async {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.changeLanguage(locale);
+  }
+
   ///Build method for App
   ///[context]: The build context
   @override
@@ -30,7 +37,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  var _locale = Locale("en","CA");
+  var _locale = const Locale("en","CA");
 
   void changeLanguage(Locale newLocale) {
     setState(() { _locale = newLocale; });
@@ -60,12 +67,12 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) =>
             MyHomePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
-        // '/customer': ,
-        '/airplane': (context) =>
-            AirplanePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
+        //'/customer': (context) => Customers(),
+        //'/airplane': (context) =>
+        //    AirplanePage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
         '/flight': (context) =>
             FlightPage(title: AppLocalizations.of(context)!.translate("title")??"No Translation Available"),
-        '/reservation': (context) => const ReservationsPage(),
+        //'/reservation': (context) => const ReservationsPage(),
       },
     );
   }
@@ -77,13 +84,16 @@ class MyHomePage extends StatefulWidget {
 
   /// The title of the homepage.
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 /// State class for [MyHomePage].
 class _MyHomePageState extends State<MyHomePage> {
+
+  List<Locale> locales = [Locale("en","CA"), Locale("ja")];
+  var currentLocIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -105,21 +115,45 @@ class _MyHomePageState extends State<MyHomePage> {
             style: const TextStyle(
                 color: Colors.white,
                 fontFamily: "Satoshi",
-                fontSize: 35,
+                fontSize: 25,
                 fontWeight: FontWeight.bold),
           ),
         ),
+        ElevatedButton(
+            onPressed: () {
+              MyApp.setLocale(context, locales[++currentLocIndex%2]);
+            },
+            style: ButtonStyle(
+                backgroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.black38),
+                foregroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.black38),
+                overlayColor:
+                MaterialStateColor.resolveWith((states) => Colors.black12)),
+            child: SizedBox(
+                width: 250,
+                height: 30,
+                child: Row(children: [
+                  const Icon(
+                    Icons.language,
+                    color: Colors.greenAccent,
+                  ),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  Text(translate("next_language"),
+                      style:
+                      const TextStyle(color: Colors.white, fontFamily: "Satoshi"))
+                ]))),
         ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, '/customer');
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -139,11 +173,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -163,11 +197,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -187,11 +221,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             style: ButtonStyle(
                 backgroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 foregroundColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black38),
+                    MaterialStateColor.resolveWith((states) => Colors.black38),
                 overlayColor:
-                    WidgetStateColor.resolveWith((states) => Colors.black12)),
+                    MaterialStateColor.resolveWith((states) => Colors.black12)),
             child: SizedBox(
                 width: 250,
                 height: 30,
@@ -238,7 +272,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               InteractiveViewer(
                 child: DataTable(
-                  headingRowColor: WidgetStateColor.resolveWith(
+                  headingRowColor: MaterialStateColor.resolveWith(
                       (states) => Colors.black54),
                   columns: [
                     DataColumn(
@@ -300,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: flightList(
-                            size.width - 100, size.height / 2, 45, 8))
+                            size.width - 100, size.height / 2 - 30, 45, 8))
                   ],
                 ),
               ),
